@@ -5,7 +5,9 @@
   whatsappNumber: "905537450744",
   photoUploadUrl:
     "https://drive.google.com/drive/folders/1O6YldP59B-Qid-7puYtfDL4yb4HbZoGg?usp=drive_link",
-  musicUrl: "music.mp3",
+  // ?v=2: vercel.json bu dosyaya 1 yillik immutable cache veriyor. Dosyayi
+  // degistirdigimizde eski ziyaretcinin tarayicisi eskisini sunmasin diye surum eki.
+  musicUrl: "music.mp3?v=2",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Atosev%20Sosyal%20Tesisleri",
 };
@@ -16,6 +18,11 @@ const music = document.getElementById("bg-music");
 const musicToggle = document.getElementById("music-toggle");
 const musicToggleText = document.getElementById("music-toggle-text");
 const musicPlaySymbol = document.querySelector(".play-symbol");
+const musicProgress = document.getElementById("music-progress");
+const musicElapsed = document.getElementById("music-elapsed");
+const musicDuration = document.getElementById("music-duration");
+const phoneShell = document.querySelector(".phone-shell");
+const quickNav = document.querySelector(".quick-nav");
 const countdownDone = document.getElementById("countdown-done");
 const countdown = document.querySelector(".countdown");
 const countdownIds = {
@@ -54,6 +61,44 @@ function setMusicState(isPlaying) {
   }
 }
 
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return "--:--";
+  const total = Math.floor(seconds);
+  const minutes = String(Math.floor(total / 60)).padStart(2, "0");
+  const rest = String(total % 60).padStart(2, "0");
+  return `${minutes}:${rest}`;
+}
+
+let lastProgressRatio = 0;
+
+// Gecen sure, toplam sure ve ilerleme noktasini sarkinin gercek durumuna gore ciz.
+function renderMusicTime() {
+  if (!music) return;
+
+  const current = music.currentTime || 0;
+  const total = music.duration;
+  const hasTotal = Number.isFinite(total) && total > 0;
+
+  if (musicElapsed) musicElapsed.textContent = formatTime(current);
+  if (musicDuration) musicDuration.textContent = formatTime(total);
+  if (musicProgress) {
+    const ratio = hasTotal ? Math.min(current / total, 1) : 0;
+    // Geriye sicrama (loop) yumusatilmaz, yoksa nokta bar boyunca geri suzulur.
+    musicProgress.style.setProperty("--progress-ease", ratio < lastProgressRatio ? "0s" : "240ms");
+    musicProgress.style.setProperty("--progress", `${(ratio * 100).toFixed(2)}%`);
+    lastProgressRatio = ratio;
+  }
+}
+
+// Kapak ekrani ustteyken arkadaki icerik Tab ile gezilmesin, ekran okuyucuya gitmesin.
+function setBackgroundInert(isInert) {
+  [phoneShell, quickNav].forEach((element) => {
+    if (!element) return;
+    if (isInert) element.setAttribute("inert", "");
+    else element.removeAttribute("inert");
+  });
+}
+
 async function playMusic() {
   if (!music || !INVITE.musicUrl) return false;
 
@@ -70,8 +115,12 @@ async function playMusic() {
   }
 }
 
-function openInvitation() {
+async function openInvitation() {
   startScreen?.classList.add("is-hidden");
+  setBackgroundInert(false);
+  // Bu bir kullanici dokunusu, o yuzden otomatik oynatma politikasi izin verir.
+  // Yine de reddedilebilir (iOS dusuk guc modu vb.); playMusic sessizce kapali duruma duser.
+  await playMusic();
 }
 
 function setupScrollReveal() {
@@ -126,7 +175,7 @@ function updateCountdown() {
 }
 
 const WHATSAPP_MESSAGES = {
-  yes: "Merhaba! 24 Eylül'e başka plan yapmadık, geliyoruz. Adım: ",
+  yes: "Merhaba! 24 Eylül'e başka plan yapmadık, geliyoruz. Gelenler: ",
   no: "Merhaba! Ne yazık ki o gün aranızda olamayacağım ama kalbim sizinle, en güzel gününüz olsun. Adım: ",
   maybe: "Merhaba! Henüz takvimle pazarlık halindeyim, netleşir netleşmez haber vereceğim. Adım: ",
 };
@@ -164,8 +213,17 @@ setLink("photo-link", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz ek
 setLink("photo-link-button", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz eklenmedi.");
 
 if (music && INVITE.musicUrl) {
-  musicToggle.hidden = false;
+  if (musicToggle) musicToggle.hidden = false;
   setMusicState(false);
+  renderMusicTime();
+
+  // Toplam sure ancak metadata yuklenince bilinir (preload="none").
+  music.addEventListener("loadedmetadata", renderMusicTime);
+  // loop acik oldugu icin sarki basa donunce currentTime sifirlanir; sayac da onunla sifirlanir.
+  music.addEventListener("timeupdate", renderMusicTime);
+  // Calma durumu baska bir sebeple degisirse de simge dogru kalsin.
+  music.addEventListener("play", () => setMusicState(true));
+  music.addEventListener("pause", () => setMusicState(false));
 }
 
 startButton?.addEventListener("click", openInvitation);
@@ -181,7 +239,9 @@ musicToggle?.addEventListener("click", async () => {
   }
 });
 
-music?.addEventListener("ended", () => setMusicState(false));
+if (startScreen && !startScreen.classList.contains("is-hidden")) {
+  setBackgroundInert(true);
+}
 
 setupScrollReveal();
 updateCountdown();

@@ -1,0 +1,7 @@
+# Yerel onizleme / karsilastirma dosyalari - canliya cikmaz
+takvim-alternatifleri.html
+.claude/
+
+# Muzik yedegi ve dinleme kopyasi - deploy edilmesin
+music-original.mp3
+music-96k.mp3

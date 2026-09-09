@@ -1,13 +1,11 @@
 :root {
-  --paper: #fbf5ef;
-  --cream: #fffaf6;
-  --blush: #fff1ec;
-  --mist: #f3f6ed;
+  /* Tum sitenin tek zemin rengi. Hero'nun sicak krem tonu. */
+  --bg: #fdf6f0;
+  /* Zemin uzerine binen yari saydam yuzeyler (muzik calar, alt menu). */
+  --bg-veil: rgba(253, 246, 240, 0.72);
   --ink: #111111;
   --muted: #5f554d;
-  --sage: #7f8f78;
   --rose: #c33f35;
-  --gold: #d5a044;
   --line: rgba(17, 17, 17, 0.18);
   --shadow: 0 18px 38px rgba(17, 17, 17, 0.08);
 }
@@ -47,10 +45,7 @@ body {
   min-height: 100vh;
   color: var(--ink);
   font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
-  background:
-    radial-gradient(circle at 50% 12%, rgba(195, 63, 53, 0.06), transparent 28%),
-    linear-gradient(90deg, rgba(17, 17, 17, 0.03), transparent 20%, transparent 80%, rgba(17, 17, 17, 0.03)),
-    #fffaf6;
+  background: var(--bg);
 }
 
 a {
@@ -67,7 +62,7 @@ a {
   overflow: hidden;
   color: var(--ink);
   text-align: center;
-  background: #fffaf4;
+  background: var(--bg);
   transition: opacity 700ms ease, visibility 700ms ease;
 }
 
@@ -120,9 +115,7 @@ a {
   inset: 13.5% 14.5% 15.5%;
   overflow: hidden;
   border-radius: 8px;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255, 250, 246, 0.9), rgba(251, 241, 234, 0.96)),
-    linear-gradient(180deg, rgba(195, 63, 53, 0.08), rgba(213, 160, 68, 0.08));
+  background: var(--bg);
   box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.06);
 }
 
@@ -179,7 +172,7 @@ a {
   border: 2px solid #111;
   border-radius: 999px;
   color: #111;
-  background: rgba(255, 250, 244, 0.72);
+  background: var(--bg-veil);
   font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
   font-size: 1.1rem;
   font-weight: 900;
@@ -205,14 +198,10 @@ a {
   text-transform: none;
 }
 
-.music-toggle[aria-pressed="false"] {
-  color: var(--ink);
-}
-
 .phone-shell {
   width: min(100%, 430px);
   margin: 0 auto;
-  background: var(--cream);
+  background: var(--bg);
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -261,8 +250,12 @@ a {
   background: rgba(17, 17, 17, 0.12);
 }
 
-.section-kicker,
-.eyebrow {
+/* Son bolumden sonra ayrilacak bir sey yok. */
+.section:last-of-type::after {
+  display: none;
+}
+
+.section-kicker {
   margin: 0 0 14px;
   color: var(--muted);
   font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
@@ -276,25 +269,6 @@ h1,
 h2,
 p {
   margin-top: 0;
-}
-
-h1 {
-  margin-bottom: 18px;
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
-  font-size: clamp(3.4rem, 18vw, 5.5rem);
-  font-weight: 900;
-  line-height: 0.9;
-  text-shadow:
-    0.45px 0 var(--ink),
-    -0.45px 0 var(--ink),
-    0 0.45px var(--ink);
-}
-
-h1 span {
-  display: block;
-  color: var(--rose);
-  font-size: 0.44em;
-  line-height: 1;
 }
 
 h2 {
@@ -320,18 +294,12 @@ p {
 
 .hero {
   min-height: 100svh;
-  justify-content: flex-start;
-  padding-top: clamp(40px, 8svh, 72px);
-  padding-bottom: 72px;
-  background:
-    radial-gradient(circle at 50% 18%, rgba(195, 63, 53, 0.08), transparent 30%),
-    radial-gradient(circle at 50% 36%, rgba(213, 160, 68, 0.12), transparent 34%),
-    linear-gradient(180deg, #fffaf6 0%, #fbf1ea 100%);
-}
-
-.hero .eyebrow {
-  margin-bottom: 10px;
-  font-size: 1.02rem;
+  /* Icerik dikeyde ortalanir; alt bosluk asagi oku VE sabit alt menuyu paylar. */
+  justify-content: center;
+  /* Alt bosluk: asagi ok (38px) + nefes payi + sabit alt menu (14+48px) buraya sigar. */
+  --hero-foot: clamp(120px, 15svh, 132px);
+  /* .section'in shorthand'ini parca parca ezmemek icin burada da shorthand. */
+  padding: clamp(32px, 6svh, 60px) 28px var(--hero-foot);
 }
 
 .hero-welcome {
@@ -340,7 +308,9 @@ p {
   color: var(--ink);
   font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
   font-size: clamp(1.85rem, 8vw, 2.45rem);
+  font-style: italic;
   font-weight: 900;
+  letter-spacing: 0.018em;
   line-height: 1.08;
   text-shadow:
     0.35px 0 var(--ink),
@@ -372,20 +342,35 @@ p {
   text-transform: uppercase;
 }
 
-.hero-calendar-month::after,
-.hero-calendar-year::before {
-  content: "";
-  display: block;
-  width: min(100%, 245px);
-  height: 10px;
-  margin: 8px auto 0;
-  border-top: 2px solid var(--ink);
-  border-radius: 50%;
-  opacity: 0.58;
+/* 20-28 Eylul 2026'nin gercek gun harfleri; dugun gunu gul renginde. */
+.hero-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 1px;
+  margin: 12px 0 2px;
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
 }
 
-.hero-calendar-year::before {
-  margin: 0 auto 8px;
+.hero-calendar-weekdays span {
+  min-width: 28px;
+}
+
+.hero-calendar-weekdays .is-wedding {
+  color: var(--rose);
+}
+
+/* Gunlerin uzerinde durdugu el cekimi cetvel cizgisi. */
+.hero-calendar-baseline {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin: 2px auto 10px;
+  overflow: visible;
+  color: var(--ink);
+  opacity: 0.5;
 }
 
 .hero-calendar-days {
@@ -393,7 +378,7 @@ p {
   grid-template-columns: repeat(9, 1fr);
   align-items: center;
   gap: 1px;
-  margin: 8px 0;
+  margin: 0;
   font-size: 1.02rem;
   font-style: italic;
   font-weight: 900;
@@ -414,9 +399,18 @@ p {
 }
 
 .hero-calendar-days strong {
-  color: #fffaf6;
-  background: var(--rose);
-  box-shadow: 0 0 0 2px var(--ink);
+  position: relative;
+  color: var(--ink);
+}
+
+.hero-calendar-ring {
+  position: absolute;
+  inset: -6px -3px -5px;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  color: var(--rose);
+  pointer-events: none;
 }
 
 .music-player {
@@ -426,7 +420,7 @@ p {
   padding: 20px 18px 18px;
   border: 3px solid var(--ink);
   border-radius: 24px 28px 22px 26px;
-  background: rgba(255, 250, 246, 0.68);
+  background: var(--bg-veil);
   text-align: left;
 }
 
@@ -462,11 +456,15 @@ p {
 .music-progress span {
   position: absolute;
   bottom: -8px;
-  left: 28%;
+  /* --progress'i script.js her timeupdate'te .music-progress uzerinde gunceller. */
+  left: var(--progress, 0%);
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background: var(--ink);
+  transform: translateX(-50%);
+  /* Sarki basa donunce script gecisi kapatir; nokta geri suzulmez. */
+  transition: left var(--progress-ease, 240ms) linear;
 }
 
 .music-progress span::before {
@@ -490,8 +488,14 @@ p {
   font-weight: 900;
 }
 
-.music-controls span:last-child {
+.music-time-total {
   text-align: right;
+}
+
+/* Oklar dekoratif: sarma yok, o yuzden soluk ve tiklanamaz. */
+.music-arrow {
+  opacity: 0.32;
+  pointer-events: none;
 }
 
 .music-controls b {
@@ -537,7 +541,9 @@ p {
 .scroll-cue {
   position: absolute;
   right: 0;
-  bottom: 34px;
+  /* Hero'nun alt bosluguna gore konumlanir: her ekran yuksekliginde
+     hem son icerigin altinda hem sabit alt menunun ustunde kalir. */
+  bottom: calc(var(--hero-foot, 120px) - 44px);
   left: 0;
   display: grid;
   width: 38px;
@@ -557,10 +563,6 @@ p {
   transform: rotate(45deg) translate(-2px, -2px);
 }
 
-.intro {
-  background: linear-gradient(180deg, #fffaf6 0%, #fbf1ea 100%);
-}
-
 .story-illustration {
   width: min(100%, 300px);
   margin: 0 auto 26px;
@@ -573,12 +575,6 @@ p {
   border: 2px solid rgba(17, 17, 17, 0.18);
   border-radius: 8px;
   box-shadow: none;
-}
-
-.date-block {
-  background:
-    radial-gradient(circle at 50% 28%, rgba(255, 250, 246, 0.66), transparent 38%),
-    var(--mist);
 }
 
 .date-heading {
@@ -634,8 +630,7 @@ p {
   padding: 8px 4px;
   border: 1.5px solid rgba(17, 17, 17, 0.28);
   border-radius: 999px 999px 10px 10px;
-  background:
-    linear-gradient(180deg, rgba(255, 250, 244, 0.92), rgba(248, 236, 233, 0.58));
+  background: var(--bg-veil);
   box-shadow: none;
   overflow: hidden;
 }
@@ -668,12 +663,6 @@ p {
   text-transform: uppercase;
 }
 
-.program {
-  background:
-    radial-gradient(circle at 50% 20%, rgba(195, 63, 53, 0.1), transparent 36%),
-    linear-gradient(180deg, #fffaf6 0%, #fbf1ea 100%);
-}
-
 .program > :not(.program-deco) {
   position: relative;
   z-index: 1;
@@ -686,7 +675,8 @@ p {
   height: auto;
   pointer-events: none;
   user-select: none;
-  opacity: 0.62;
+  /* Zeminde kalsinlar: metin uzerlerinden gectigi icin dusuk opaklik sart. */
+  opacity: 0.34;
 }
 
 .program-deco-left {
@@ -696,14 +686,14 @@ p {
 }
 
 .program-deco-right {
-  right: -74px;
+  right: -104px;
   bottom: 152px;
   width: 220px;
 }
 
 .program-deco-bottom {
   bottom: 152px;
-  left: -54px;
+  left: -92px;
   width: 238px;
 }
 
@@ -749,7 +739,7 @@ p {
   position: absolute;
   top: 22px;
   left: 58px;
-  background: var(--cream);
+  background: var(--bg);
 }
 
 .timeline time {
@@ -780,12 +770,6 @@ p {
   font-weight: 700;
   letter-spacing: 0.018em;
   line-height: 1.52;
-}
-
-.venue {
-  background:
-    linear-gradient(rgba(255, 250, 246, 0.9), rgba(255, 250, 246, 0.96)),
-    repeating-linear-gradient(135deg, rgba(17, 17, 17, 0.045) 0 1px, transparent 1px 16px);
 }
 
 .venue p,
@@ -833,16 +817,12 @@ p {
 
 .button.primary {
   background: var(--ink);
-  color: #fffaf6;
+  color: var(--bg);
 }
 
 .button.secondary {
   border-color: var(--rose);
   color: var(--rose);
-}
-
-.rsvp {
-  background: linear-gradient(180deg, #fff1ec 0%, #fffaf6 100%);
 }
 
 .rsvp-choices {
@@ -926,9 +906,6 @@ p {
 
 .heart-club {
   min-height: 94svh;
-  background:
-    radial-gradient(circle at 50% 24%, rgba(213, 160, 68, 0.12), transparent 34%),
-    linear-gradient(180deg, #fffaf6 0%, #fbf1ea 100%);
 }
 
 .heart-club-illustration {
@@ -947,9 +924,6 @@ p {
 
 .closing {
   min-height: 78svh;
-  background:
-    radial-gradient(circle at 50% 35%, rgba(195, 63, 53, 0.13), transparent 34%),
-    #fffaf6;
 }
 
 .quick-nav {
@@ -968,7 +942,7 @@ p {
   padding: 4px;
   border: 1.5px solid rgba(17, 17, 17, 0.18);
   border-radius: 999px;
-  background: rgba(255, 250, 246, 0.88);
+  background: var(--bg-veil);
   box-shadow: none;
   backdrop-filter: blur(14px);
 }
@@ -1008,7 +982,7 @@ p {
 
   .program-deco-bottom {
     bottom: 88px;
-    left: -74px;
+    left: -104px;
     width: 218px;
   }
 }
@@ -1061,6 +1035,10 @@ p {
   }
 
   .start-screen {
+    transition: none;
+  }
+
+  .music-progress span {
     transition: none;
   }
 }

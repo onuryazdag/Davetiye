@@ -93,38 +93,57 @@
             </picture>
           </figure>
         </div>
-        <p class="hero-welcome">Hikâyemizin en güzel gününe hoş geldiniz.</p>
-        <div class="hero-calendar-strip" aria-label="24 Eylül 2026">
+        <h1 class="hero-welcome">Hikâyemizin en güzel gününe hoş geldiniz.</h1>
+        <div class="hero-calendar-strip" aria-label="24 Eylül 2026, perşembe">
           <span class="hero-calendar-month">Eylül</span>
+          <div class="hero-calendar-weekdays" aria-hidden="true">
+            <span>P</span>
+            <span>P</span>
+            <span>S</span>
+            <span>Ç</span>
+            <span class="is-wedding">P</span>
+            <span>C</span>
+            <span>C</span>
+            <span>P</span>
+            <span>P</span>
+          </div>
           <div class="hero-calendar-days" aria-hidden="true">
             <span>20</span>
             <span>21</span>
             <span>22</span>
             <span>23</span>
-            <strong>24</strong>
+            <strong>
+              24
+              <svg class="hero-calendar-ring" viewBox="0 0 48 44" fill="none" aria-hidden="true">
+                <path d="M29.8 3.8C18.2 1.2 5.2 8.4 4.4 19.6c-.8 10.9 9.2 20.4 20.6 20.4 11.4 0 19.9-8.4 19.4-18.4-.4-9.4-7.4-16.4-16.2-17.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </strong>
             <span>25</span>
             <span>26</span>
             <span>27</span>
             <span>28</span>
           </div>
+          <svg class="hero-calendar-baseline" viewBox="0 0 330 8" fill="none" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M4 4.6c42 2.4 84-2 126 .4s84 2.6 126-.6 62 1.4 72 .8" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          </svg>
           <span class="hero-calendar-year">2026</span>
         </div>
         <div class="music-player" aria-label="Müzik çalar">
           <div class="music-player-top">
             <span>Yaşar - Gel Benimle</span>
           </div>
-          <div class="music-progress" aria-hidden="true">
+          <div class="music-progress" id="music-progress" aria-hidden="true">
             <span></span>
           </div>
           <div class="music-controls">
-            <span aria-hidden="true">01:03</span>
-            <b aria-hidden="true">↜</b>
+            <span class="music-time" id="music-elapsed" aria-hidden="true">00:00</span>
+            <b class="music-arrow" aria-hidden="true">↜</b>
             <button class="music-toggle music-play-toggle" id="music-toggle" type="button" aria-pressed="false" aria-label="Müziği aç" hidden>
               <span class="play-symbol" aria-hidden="true">▶</span>
               <span class="sr-only" id="music-toggle-text">Kapalı</span>
             </button>
-            <b aria-hidden="true">↝</b>
-            <span aria-hidden="true">∞</span>
+            <b class="music-arrow" aria-hidden="true">↝</b>
+            <span class="music-time music-time-total" id="music-duration" aria-hidden="true">--:--</span>
           </div>
         </div>
         <p class="music-hint">Müzik için minik play'e dokunmanız yeterli.</p>
