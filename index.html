@@ -44,7 +44,9 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <audio id="bg-music" preload="none" loop></audio>
+    <!-- preload="metadata": sadece basligi ceker (birkac KB), sarkiyi indirmez.
+         Boylece calar daha basmadan gercek sureyi gosterir, olu gorunmez. -->
+    <audio id="bg-music" preload="metadata" loop></audio>
 
     <div class="start-screen" id="start-screen" aria-label="Davetiyeyi açılış ekranı">
       <figure class="start-cover">
@@ -156,13 +158,13 @@
         <p class="section-kicker">Bizimle olun</p>
         <figure class="story-illustration reveal-item">
           <picture>
-            <source srcset="assets/wedding-illustration-preview.webp" type="image/webp" />
+            <source srcset="assets/bizimle-olun-misafirler.webp" type="image/webp" />
             <img
-              src="assets/wedding-illustration-preview-fallback.jpg"
-              alt="Zarif düğün sofrası illüstrasyonu"
+              src="assets/bizimle-olun-misafirler-fallback.jpg"
+              alt="Sandalyelerde oturan düğün misafirlerinin ve gelin ile damadın çizimi"
               loading="lazy"
-              width="900"
-              height="1125"
+              width="800"
+              height="1194"
             />
           </picture>
         </figure>
@@ -322,13 +324,13 @@
       <section class="section heart-club reveal-section" id="kalbi-bizimle">
         <figure class="heart-club-illustration reveal-item">
           <picture>
-            <source srcset="assets/kalbi-bizimle-names.webp" type="image/webp" />
+            <source srcset="assets/kalbi-bizimle-ates-lyon.webp" type="image/webp" />
             <img
-              src="assets/kalbi-bizimle-names-fallback.jpg"
-              alt="Orada olamasalar da kalbi bizimle olanlar kulübü illüstrasyonu"
+              src="assets/kalbi-bizimle-ates-lyon-fallback.jpg"
+              alt="Ateş ve Lyon'un düğün masasında oturduğu illüstrasyon: orada olamasalar da kalbi bizimle olanlar kulübü"
               loading="lazy"
               width="900"
-              height="1125"
+              height="1124"
             />
           </picture>
         </figure>

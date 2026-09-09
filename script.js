@@ -7,7 +7,7 @@
     "https://drive.google.com/drive/folders/1O6YldP59B-Qid-7puYtfDL4yb4HbZoGg?usp=drive_link",
   // ?v=2: vercel.json bu dosyaya 1 yillik immutable cache veriyor. Dosyayi
   // degistirdigimizde eski ziyaretcinin tarayicisi eskisini sunmasin diye surum eki.
-  musicUrl: "music.mp3?v=3",
+  musicUrl: "music.mp3?v=4",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Atosev%20Sosyal%20Tesisleri",
 };
@@ -144,8 +144,9 @@ async function playMusic() {
 async function openInvitation() {
   startScreen?.classList.add("is-hidden");
   setBackgroundInert(false);
-  // Bu bir kullanici dokunusu, o yuzden otomatik oynatma politikasi izin verir.
-  // Yine de reddedilebilir (iOS dusuk guc modu vb.); playMusic sessizce kapali duruma duser.
+  // Bu bir kullanici dokunusu, otomatik oynatma politikasi izin verir.
+  // Reddedilirse playMusic sessizce kapali duruma duser; o durumda play
+  // tusundaki nabiz atmaya devam eder ve kullaniciyi tusa yonlendirir.
   await playMusic();
 }
 
@@ -322,16 +323,28 @@ setLink("photo-link", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz ek
 setLink("photo-link-button", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz eklenmedi.");
 
 if (music && INVITE.musicUrl) {
-  if (musicToggle) musicToggle.hidden = false;
+  // Kaynagi burada bagliyoruz ki preload="metadata" isini yapabilsin:
+  // sarkiyi indirmeden sadece basligi ceker ve gercek sure hemen gorunur.
+  if (!music.getAttribute("src")) music.src = INVITE.musicUrl;
+
+  if (musicToggle) {
+    musicToggle.hidden = false;
+    // Basilana kadar nabiz atar; dokunulabilir oldugu anlasilsin diye.
+    musicToggle.classList.add("is-bekliyor");
+  }
   setMusicState(false);
   renderMusicTime();
 
-  // Toplam sure ancak metadata yuklenince bilinir (preload="none").
+  // Toplam sure metadata gelince bilinir (audio preload="metadata").
   music.addEventListener("loadedmetadata", renderMusicTime);
   // loop acik oldugu icin sarki basa donunce currentTime sifirlanir; sayac da onunla sifirlanir.
   music.addEventListener("timeupdate", renderMusicTime);
   // Calma durumu baska bir sebeple degisirse de simge dogru kalsin.
-  music.addEventListener("play", () => setMusicState(true));
+  music.addEventListener("play", () => {
+    setMusicState(true);
+    // Kesfedildi: nabiz bir daha atmasin.
+    musicToggle?.classList.remove("is-bekliyor");
+  });
   music.addEventListener("pause", () => setMusicState(false));
   // Duraklatilmisken ekran donerse nokta yanlis yerde kalmasin.
   window.addEventListener("resize", renderMusicTime);

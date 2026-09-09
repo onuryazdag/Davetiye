@@ -6,3 +6,7 @@ fikirler-onizleme.html
 # Muzik yedegi ve dinleme kopyasi - deploy edilmesin
 music-original.mp3
 music-96k.mp3
+
+# Ham gorsel kaynaklari - islenmis halleri assets/ altinda
+ChatGPT Image*.png
+WhatsApp Image*.jpeg
