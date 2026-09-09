@@ -1,40 +1,62 @@
 # Hatice & Onur Davetiye Sitesi
 
-Mobil odaklı, tek sayfalık düğün davetiyesi. Netlify, Vercel veya GitHub Pages'e doğrudan yüklenebilir.
+Mobil odakli, tek sayfalik dugun davetiyesi. Statik site — Vercel'e dogrudan yuklenir.
 
 ## Dosyalar
 
-- `index.html`: Sayfa içeriği
-- `styles.css`: Mobil tasarım
-- `script.js`: Geri sayım ve link ayarları
-- `assets/floral-frame.svg`: Kapak görseli
+- `index.html` — sayfa icerigi
+- `styles.css` — tasarim
+- `script.js` — geri sayim, muzik ve link ayarlari
+- `vercel.json` — Vercel cache ve guvenlik basliklari
+- `assets/` — gorseller, font, paylasim gorseli
+- `music.mp3` — arka plan muzigi
 
-## Linkleri ve Müziği Değiştirme
+## YAPILACAK: WhatsApp numarasini gir
 
-`script.js` icindeki `INVITE` alanini guncelleyin:
+`script.js` en ustteki `INVITE` icinde:
+
+```js
+whatsappNumber: "905XXXXXXXXX",
+```
+
+Ulke kodu ile, bosluksuz, + isareti olmadan yazin. Ornek: `"905321234567"`.
+Numara girilene kadar katilim butonlari uyari verir, WhatsApp acilmaz.
+
+## YAPILACAK: Domain adresini gir
+
+`index.html` icindeki `REPLACE-WITH-YOUR-DOMAIN` yazan 4 yeri Vercel'deki
+gercek adresinizle degistirin (ornek: `hatice-onur.vercel.app`).
+Bu adres WhatsApp/Instagram paylasim onizlemesi icin gerekli.
+
+## Diger ayarlar
+
+`script.js` icindeki `INVITE` alani:
 
 ```js
 const INVITE = {
   weddingDate: "2026-09-24T19:00:00+03:00",
-  rsvpUrl: "GOOGLE_FORM_LINKI",
-  photoUploadUrl: "FOTOGRAF_YUKLEME_LINKI",
-  musicUrl: "assets/music.mp3",
+  whatsappNumber: "905XXXXXXXXX",
+  photoUploadUrl: "GOOGLE_DRIVE_LINKI",
+  musicUrl: "music.mp3",
   mapsUrl: "GOOGLE_MAPS_LINKI",
 };
 ```
 
-Google Form linkleri hazır değilse boş bırakılabilir. Butonlar tıklandığında linkin henüz eklenmediğini söyler.
+Geri sayim dugun tarihine gelince kutular gizlenir, yerine kutlama mesaji cikar.
 
-Müzik için seçtiğiniz MP3 dosyasını `assets/music.mp3` olarak ekleyin ve `musicUrl` alanını `"assets/music.mp3"` yapın. Tarayıcılar sesli otomatik çalmayı engellediği için müzik, davetli ilk ekrana dokunduktan sonra başlar.
+## Katilim (RSVP)
 
-## Netlify'ye Yükleme
+Site icinde form yok. Misafir uc butondan birine dokunur, WhatsApp hazir
+mesajla acilir, cevap dogrudan telefonunuza gelir.
 
-Netlify'de `Upload project files` alanından bu klasörü seçin. Ana dosya `index.html` olduğu için ekstra ayar gerekmez.
+Not: Onceki surumde Netlify Forms kullaniliyordu. Site Vercel'de oldugu icin
+o form calismiyordu ve gonderilen cevaplar hicbir yere kaydedilmiyordu.
 
-## Katılım Formu
+## Muzik
 
-Katılım formu site içine gömülü Netlify Forms olarak hazırlandı. Site Netlify'ye yüklendikten sonra cevaplar Netlify panelinde `Forms` bölümünde görünür. Yerelde dosyayı açınca form görsel olarak çalışır, gerçek kayıt alma Netlify deploy sonrası aktif olur.
+Tarayicilar sesli otomatik calmayi engeller. Misafir kapaktaki butona
+dokunduktan sonra muzik calarindaki play tusuna basmalidir.
 
-## Kapak Fotoğrafı
+## Yukleme
 
-Kapaktaki iki oval çerçeve `assets/cerceve1-clean.png` dosyasını kullanır. Fotoğraflar ekleneceği zaman görselleri `assets/hatice-photo.jpg` ve `assets/onur-photo.jpg` olarak klasöre koyup `index.html` içindeki iki `.photo-crop` alanına ekleyin.
+Vercel'de projeye bu klasoru yukleyin. Ana dosya `index.html`, ekstra ayar gerekmez.

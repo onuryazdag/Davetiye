@@ -9,6 +9,34 @@
       content="Hatice ve Onur'un düğün davetiyesi. Tarih, mekan, katılım formu ve fotoğraf paylaşım linkleri."
     />
     <title>Hatice &amp; Onur | Davetiye</title>
+
+    <link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN/" />
+    <meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content="Hatice &amp; Onur" />
+    <meta property="og:title" content="Hatice &amp; Onur — 24 Eylül 2026" />
+    <meta
+      property="og:description"
+      content="Düğünümüze davetlisiniz. Tarih, program, mekan ve katılım bilgileri burada."
+    />
+    <meta property="og:image" content="https://REPLACE-WITH-YOUR-DOMAIN/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Hatice ve Onur düğün davetiyesi" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hatice &amp; Onur — 24 Eylül 2026" />
+    <meta
+      name="twitter:description"
+      content="Düğünümüze davetlisiniz. Tarih, program, mekan ve katılım bilgileri burada."
+    />
+    <meta name="twitter:image" content="https://REPLACE-WITH-YOUR-DOMAIN/assets/og-image.jpg" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <link rel="preload" href="assets/girissayfasi.webp" as="image" />
     <link rel="preload" href="assets/hero-frame-transparent.webp" as="image" />
     <link rel="preload" href="assets/hatice-portrait.webp" as="image" />
@@ -159,6 +187,9 @@
             <span>Saniye</span>
           </div>
         </div>
+        <p class="countdown-done" id="countdown-done" hidden>
+          Gün geldi. Bugün evleniyoruz — sizi aramızda görmek çok güzel olacak.
+        </p>
       </section>
 
       <section class="section program reveal-section" id="program">
@@ -226,40 +257,20 @@
 
       <section class="section rsvp reveal-section" id="rsvp">
         <p class="section-kicker">Katılım</p>
-        <h2>Katılım durumunuzu bize bildirin.</h2>
+        <h2>Geliyor musunuz?</h2>
         <p>
-          Planlamayı kolaylaştırmak için müsait olduğunuzda formu
-          doldurabilirsiniz.
+          Sofrayı doğru kurabilmemiz için haber verin yeter. Butona dokununca
+          WhatsApp açılır, mesaj hazır gelir — siz sadece gönderin.
         </p>
-        <form class="rsvp-form reveal-item" name="katilim" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
-          <input type="hidden" name="form-name" value="katilim" />
-          <p class="hidden-field">
-            <label>Bu alanı boş bırakın <input name="bot-field" /></label>
-          </p>
-          <label>
-            <span>Ad Soyad</span>
-            <input name="name" type="text" autocomplete="name" required />
-          </label>
-          <label>
-            <span>Katılım durumu</span>
-            <select name="attendance" required>
-              <option value="">Seçiniz</option>
-              <option value="Katılacağım">Katılacağım</option>
-              <option value="Katılamayacağım">Katılamayacağım</option>
-              <option value="Henüz net değil">Henüz net değil</option>
-            </select>
-          </label>
-          <p class="form-note">Son kararınızı 1 Eylül'e kadar güncelleyebilirsiniz.</p>
-          <label>
-            <span>Kaç kişi geliyorsunuz?</span>
-            <input name="guests" type="number" min="0" max="10" inputmode="numeric" />
-          </label>
-          <label>
-            <span>Notunuz</span>
-            <textarea name="note" rows="3" placeholder="İsterseniz bize küçük bir not bırakın."></textarea>
-          </label>
-          <button class="button primary" type="submit">Katılımı Gönder</button>
-        </form>
+        <div class="rsvp-choices reveal-item">
+          <a class="button primary rsvp-choice" data-wa="yes" href="#">Geliyorum</a>
+          <a class="button secondary rsvp-choice" data-wa="no" href="#">Gelemiyorum</a>
+          <a class="button quiet rsvp-choice" data-wa="maybe" href="#">Henüz net değil</a>
+        </div>
+        <p class="form-note">
+          Kaç kişi geleceğinizi mesajda yazabilirsiniz. Kararınız değişirse
+          tekrar yazmanız yeterli.
+        </p>
         <div class="photo-share reveal-item">
           <p class="photo-share-title">O geceyi birlikte biriktirelim</p>
           <a id="photo-link" href="#" target="_blank" rel="noreferrer" aria-label="Google Drive fotoğraf klasörünü aç">

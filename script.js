@@ -1,6 +1,8 @@
 const INVITE = {
   weddingDate: "2026-09-24T19:00:00+03:00",
-  rsvpUrl: "",
+  // Katilim mesajlarinin gelecegi WhatsApp numarasi.
+  // Ulke kodu ile, bosluksuz ve + isareti olmadan yazin. Ornek: "905321234567"
+  whatsappNumber: "905XXXXXXXXX",
   photoUploadUrl:
     "https://drive.google.com/drive/folders/1O6YldP59B-Qid-7puYtfDL4yb4HbZoGg?usp=drive_link",
   musicUrl: "music.mp3",
@@ -14,6 +16,8 @@ const music = document.getElementById("bg-music");
 const musicToggle = document.getElementById("music-toggle");
 const musicToggleText = document.getElementById("music-toggle-text");
 const musicPlaySymbol = document.querySelector(".play-symbol");
+const countdownDone = document.getElementById("countdown-done");
+const countdown = document.querySelector(".countdown");
 const countdownIds = {
   days: document.getElementById("count-days"),
   hours: document.getElementById("count-hours"),
@@ -101,6 +105,15 @@ function updateCountdown() {
   const now = Date.now();
   const remaining = Math.max(target - now, 0);
 
+  if (remaining <= 0) {
+    if (countdown) countdown.hidden = true;
+    if (countdownDone) countdownDone.hidden = false;
+    Object.values(countdownIds).forEach((node) => {
+      if (node) node.textContent = "0";
+    });
+    return;
+  }
+
   const seconds = Math.floor(remaining / 1000) % 60;
   const minutes = Math.floor(remaining / (1000 * 60)) % 60;
   const hours = Math.floor(remaining / (1000 * 60 * 60)) % 24;
@@ -112,6 +125,40 @@ function updateCountdown() {
   countdownIds.seconds.textContent = seconds;
 }
 
+const WHATSAPP_MESSAGES = {
+  yes: "Merhaba! Düğününüze geliyoruz. Adım: ",
+  no: "Merhaba! Maalesef düğününüze katılamayacağım. Adım: ",
+  maybe: "Merhaba! Düğün için durumum henüz net değil, en kısa sürede kesinleştireceğim. Adım: ",
+};
+
+function setupWhatsappRsvp() {
+  const buttons = document.querySelectorAll(".rsvp-choice");
+  if (!buttons.length) return;
+
+  const number = (INVITE.whatsappNumber || "").replace(/\D/g, "");
+  const isConfigured = number && !INVITE.whatsappNumber.includes("X");
+
+  buttons.forEach((button) => {
+    const key = button.dataset.wa;
+    const message = WHATSAPP_MESSAGES[key] || WHATSAPP_MESSAGES.maybe;
+
+    if (!isConfigured) {
+      button.href = "#";
+      button.setAttribute("aria-disabled", "true");
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        alert("WhatsApp numarası henüz eklenmedi.");
+      });
+      return;
+    }
+
+    button.href = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    button.target = "_blank";
+    button.rel = "noreferrer";
+  });
+}
+
+setupWhatsappRsvp();
 setLink("maps-link", INVITE.mapsUrl, "Harita linki henüz eklenmedi.");
 setLink("photo-link", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz eklenmedi.");
 setLink("photo-link-button", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz eklenmedi.");
