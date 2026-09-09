@@ -735,7 +735,7 @@ p {
 
 .timeline {
   display: grid;
-  gap: 12px;
+  gap: clamp(6px, 1.4svh, 12px);
   margin: 8px 0 0;
   padding: 0;
   list-style: none;
@@ -747,7 +747,7 @@ p {
   grid-template-columns: 60px 38px 1fr;
   align-items: start;
   min-height: 86px;
-  padding: 16px 0;
+  padding: clamp(10px, 1.9svh, 16px) 0;
   border-top: 1.5px solid var(--line);
   text-align: left;
 }
@@ -800,16 +800,15 @@ p {
 }
 
 .venue-illustration {
-  width: min(100%, 318px);
-  margin: 0 auto 22px;
+  width: clamp(200px, 40svh, 318px);
+  margin: 0 auto clamp(12px, 2.4svh, 22px);
 }
 
 .venue-illustration img {
   display: block;
   width: 100%;
   height: auto;
-  border: 2px solid rgba(17, 17, 17, 0.18);
-  border-radius: 8px;
+  border: 0;
   box-shadow: none;
 }
 
@@ -946,8 +945,7 @@ p {
   display: block;
   width: 100%;
   height: auto;
-  border: 2px solid rgba(17, 17, 17, 0.18);
-  border-radius: 8px;
+  border: 0;
   box-shadow: none;
 }
 
@@ -997,6 +995,18 @@ p {
       rotate(var(--donus, 0deg));
     opacity: 0;
   }
+}
+
+/* Kapanistaki cizim; cercevesiz, zemine karisiyor. */
+.closing-illustration {
+  width: clamp(200px, 34svh, 300px);
+  margin: 0 auto clamp(6px, 1.4svh, 14px);
+}
+
+.closing-illustration img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .quick-nav {
