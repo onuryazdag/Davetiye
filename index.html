@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f0e8" />
+    <meta
+      name="description"
+      content="Hatice ve Onur'un düğün davetiyesi. Tarih, mekan, katılım formu ve fotoğraf paylaşım linkleri."
+    />
+    <title>Hatice &amp; Onur | Davetiye</title>
+    <link rel="preload" href="assets/girissayfasi.webp" as="image" />
+    <link rel="preload" href="assets/hero-frame-transparent.webp" as="image" />
+    <link rel="preload" href="assets/hatice-portrait.webp" as="image" />
+    <link rel="preload" href="assets/onur-portrait.webp" as="image" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio id="bg-music" preload="none" loop></audio>
+
+    <div class="start-screen" id="start-screen" aria-label="Davetiyeyi açılış ekranı">
+      <figure class="start-cover">
+        <picture>
+          <source srcset="assets/girissayfasi.webp" type="image/webp" />
+          <img
+            class="start-cover-image"
+            src="assets/girissayfasi-fallback.jpg"
+            alt="Hatice ve Onur düğün davetiyesi açılış görseli"
+            width="860"
+            height="1528"
+          />
+        </picture>
+        <button class="start-button" id="start-button" type="button">
+          <span aria-hidden="true">♪</span>
+          Davetiyeyi Aç
+        </button>
+      </figure>
+    </div>
+
+    <main class="phone-shell" aria-label="Hatice ve Onur düğün davetiyesi">
+      <section class="hero section" id="baslangic">
+        <div class="hero-photo-pair" aria-label="Hatice ve Onur fotoğraf alanları">
+          <figure class="hero-photo-frame">
+            <div class="photo-crop">
+              <picture>
+                <source srcset="assets/hatice-portrait.webp" type="image/webp" />
+                <img class="photo-portrait hatice-portrait" src="assets/hatice-portrait-fallback.jpg" alt="Hatice portresi" width="720" height="900" />
+              </picture>
+            </div>
+            <picture class="photo-frame-picture" aria-hidden="true">
+              <source srcset="assets/hero-frame-transparent.webp" type="image/webp" />
+              <img class="photo-frame-art" src="assets/hero-frame-transparent-fallback.png" alt="" width="720" height="900" />
+            </picture>
+          </figure>
+          <figure class="hero-photo-frame">
+            <div class="photo-crop">
+              <picture>
+                <source srcset="assets/onur-portrait.webp" type="image/webp" />
+                <img class="photo-portrait onur-portrait" src="assets/onur-portrait-fallback.jpg" alt="Onur portresi" width="720" height="900" />
+              </picture>
+            </div>
+            <picture class="photo-frame-picture" aria-hidden="true">
+              <source srcset="assets/hero-frame-transparent.webp" type="image/webp" />
+              <img class="photo-frame-art" src="assets/hero-frame-transparent-fallback.png" alt="" width="720" height="900" />
+            </picture>
+          </figure>
+        </div>
+        <p class="hero-welcome">Hikâyemizin en güzel gününe hoş geldiniz.</p>
+        <div class="hero-calendar-strip" aria-label="24 Eylül 2026">
+          <span class="hero-calendar-month">Eylül</span>
+          <div class="hero-calendar-days" aria-hidden="true">
+            <span>20</span>
+            <span>21</span>
+            <span>22</span>
+            <span>23</span>
+            <strong>24</strong>
+            <span>25</span>
+            <span>26</span>
+            <span>27</span>
+            <span>28</span>
+          </div>
+          <span class="hero-calendar-year">2026</span>
+        </div>
+        <div class="music-player" aria-label="Müzik çalar">
+          <div class="music-player-top">
+            <span>Yaşar - Gel Benimle</span>
+          </div>
+          <div class="music-progress" aria-hidden="true">
+            <span></span>
+          </div>
+          <div class="music-controls">
+            <span aria-hidden="true">01:03</span>
+            <b aria-hidden="true">↜</b>
+            <button class="music-toggle music-play-toggle" id="music-toggle" type="button" aria-pressed="false" aria-label="Müziği aç" hidden>
+              <span class="play-symbol" aria-hidden="true">▶</span>
+              <span class="sr-only" id="music-toggle-text">Kapalı</span>
+            </button>
+            <b aria-hidden="true">↝</b>
+            <span aria-hidden="true">∞</span>
+          </div>
+        </div>
+        <p class="music-hint">Müzik için minik play'e dokunmanız yeterli.</p>
+        <a class="scroll-cue" href="#davet" aria-label="Daveti aşağı kaydır">
+          <span></span>
+        </a>
+      </section>
+
+      <section class="section intro reveal-section" id="davet">
+        <p class="section-kicker">Bizimle olun</p>
+        <figure class="story-illustration reveal-item">
+          <picture>
+            <source srcset="assets/wedding-illustration-preview.webp" type="image/webp" />
+            <img
+              src="assets/wedding-illustration-preview-fallback.jpg"
+              alt="Zarif düğün sofrası illüstrasyonu"
+              loading="lazy"
+              width="900"
+              height="1125"
+            />
+          </picture>
+        </figure>
+        <h2>Yanımızda olmanız bu günü daha da güzel yapacak.</h2>
+        <p>
+          Hazırlıklar bizden, güzel enerjiniz sizden. Günün detaylarını ve
+          katılım formunu aşağıda bulabilirsiniz.
+        </p>
+      </section>
+
+      <section class="section date-block reveal-section" id="tarih">
+        <div class="date-heading">
+          <p class="section-kicker">Tarih</p>
+          <h2>24 Eylül’e plan yapmayın, biz evleniyoruz.</h2>
+        </div>
+        <figure class="countdown-art reveal-item">
+          <picture>
+            <source srcset="assets/countdown-bg.webp" type="image/webp" />
+            <img src="assets/countdown-bg.png" alt="" loading="lazy" width="760" height="760" />
+          </picture>
+        </figure>
+        <p class="countdown-note reveal-item">
+          Büyük güne geri sayım başladı. Panik yok, ayakkabıları rahat seçmek
+          için hâlâ vaktimiz var.
+        </p>
+        <div class="countdown" aria-live="polite">
+          <div>
+            <strong id="count-days">0</strong>
+            <span>Gün</span>
+          </div>
+          <div>
+            <strong id="count-hours">0</strong>
+            <span>Saat</span>
+          </div>
+          <div>
+            <strong id="count-minutes">0</strong>
+            <span>Dakika</span>
+          </div>
+          <div>
+            <strong id="count-seconds">0</strong>
+            <span>Saniye</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section program reveal-section" id="program">
+        <img class="program-deco program-deco-left" src="assets/program-kadeh-sol.png" alt="" aria-hidden="true" loading="lazy" />
+        <img class="program-deco program-deco-right" src="assets/program-kadeh-sag.png" alt="" aria-hidden="true" loading="lazy" />
+        <img class="program-deco program-deco-bottom" src="assets/program-sampanya-alt.png" alt="" aria-hidden="true" loading="lazy" />
+        <p class="section-kicker">Program</p>
+        <h2>Günün akışı</h2>
+        <p class="program-lead">
+          Plan basit: evleniyoruz, sarılıyoruz, eğleniyoruz.
+        </p>
+        <ol class="timeline">
+          <li class="reveal-item">
+            <time>19:00</time>
+            <div>
+              <strong>Resmî olarak başlıyoruz</strong>
+              <span>Nikah töreni</span>
+            </div>
+          </li>
+          <li class="reveal-item">
+            <time>20:00</time>
+            <div>
+              <strong>Kadehler kalkıyor</strong>
+              <span>Kokteyl &amp; tebrikler</span>
+            </div>
+          </li>
+          <li class="reveal-item">
+            <time>21:00</time>
+            <div>
+              <strong>Ayakkabılar rahatsa piste bekleriz</strong>
+              <span>Dans &amp; eğlence</span>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section venue reveal-section" id="mekan">
+        <p class="section-kicker">Mekan</p>
+        <h2>Atosev Sosyal Tesisleri</h2>
+        <figure class="venue-illustration reveal-item">
+          <picture>
+            <source srcset="assets/atosev-illustration2.webp" type="image/webp" />
+            <img
+              src="assets/atosev-illustration2-fallback.jpg"
+              alt="Atosev Sosyal Tesisleri göl kenarı düğün alanı illüstrasyonu"
+              loading="lazy"
+              width="900"
+              height="1125"
+            />
+          </picture>
+        </figure>
+        <p>
+          Adres ve yol tarifi için harita bağlantısını kullanabilirsiniz.
+        </p>
+        <a
+          class="button primary"
+          id="maps-link"
+          href="https://www.google.com/maps/search/?api=1&query=Atosev%20Sosyal%20Tesisleri"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Haritada Aç
+        </a>
+      </section>
+
+      <section class="section rsvp reveal-section" id="rsvp">
+        <p class="section-kicker">Katılım</p>
+        <h2>Katılım durumunuzu bize bildirin.</h2>
+        <p>
+          Planlamayı kolaylaştırmak için müsait olduğunuzda formu
+          doldurabilirsiniz.
+        </p>
+        <form class="rsvp-form reveal-item" name="katilim" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
+          <input type="hidden" name="form-name" value="katilim" />
+          <p class="hidden-field">
+            <label>Bu alanı boş bırakın <input name="bot-field" /></label>
+          </p>
+          <label>
+            <span>Ad Soyad</span>
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
+          <label>
+            <span>Katılım durumu</span>
+            <select name="attendance" required>
+              <option value="">Seçiniz</option>
+              <option value="Katılacağım">Katılacağım</option>
+              <option value="Katılamayacağım">Katılamayacağım</option>
+              <option value="Henüz net değil">Henüz net değil</option>
+            </select>
+          </label>
+          <p class="form-note">Son kararınızı 1 Eylül'e kadar güncelleyebilirsiniz.</p>
+          <label>
+            <span>Kaç kişi geliyorsunuz?</span>
+            <input name="guests" type="number" min="0" max="10" inputmode="numeric" />
+          </label>
+          <label>
+            <span>Notunuz</span>
+            <textarea name="note" rows="3" placeholder="İsterseniz bize küçük bir not bırakın."></textarea>
+          </label>
+          <button class="button primary" type="submit">Katılımı Gönder</button>
+        </form>
+        <div class="photo-share reveal-item">
+          <p class="photo-share-title">O geceyi birlikte biriktirelim</p>
+          <a id="photo-link" href="#" target="_blank" rel="noreferrer" aria-label="Google Drive fotoğraf klasörünü aç">
+            <img src="assets/photo-upload-qr-small.png" alt="Fotoğraf yükleme klasörü QR kodu" loading="lazy" width="600" height="600" />
+          </a>
+          <p class="photo-share-copy">
+            O gece çektiğiniz fotoğrafları burada buluşturalım. Düğün günü bu
+            bağlantıyı kullanarak fotoğraflarınızı paylaşabilirsiniz.
+          </p>
+          <a class="button secondary" id="photo-link-button" href="#" target="_blank" rel="noreferrer">
+            Fotoğraf Yükle
+          </a>
+        </div>
+      </section>
+
+      <section class="section heart-club reveal-section" id="kalbi-bizimle">
+        <figure class="heart-club-illustration reveal-item">
+          <picture>
+            <source srcset="assets/kalbi-bizimle-names.webp" type="image/webp" />
+            <img
+              src="assets/kalbi-bizimle-names-fallback.jpg"
+              alt="Orada olamasalar da kalbi bizimle olanlar kulübü illüstrasyonu"
+              loading="lazy"
+              width="900"
+              height="1125"
+            />
+          </picture>
+        </figure>
+      </section>
+
+      <section class="section closing reveal-section" id="kapanis">
+        <p class="section-kicker">Sevgilerimizle</p>
+        <h2>Hatice &amp; Onur</h2>
+        <p>Bu güzel günü birlikte hatırlamak dileğiyle.</p>
+      </section>
+    </main>
+
+    <nav class="quick-nav" aria-label="Davetiye kısayolları">
+      <a href="#tarih">Tarih</a>
+      <a href="#mekan">Mekan</a>
+      <a href="#rsvp">Katılım</a>
+    </nav>
+
+    <script src="script.js"></script>
+  </body>
+</html>
