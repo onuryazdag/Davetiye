@@ -99,14 +99,17 @@ a {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 0 auto 22px;
+  margin: 0 auto clamp(8px, 2svh, 16px);
 }
 
 .hero-photo-frame {
   position: relative;
-  width: min(42vw, 165px);
+  /* 21svh: kisa ekranlarda fotograflar kuculur, 844+ ekranda 165px'te kalir. */
+  width: min(42vw, 165px, 21svh);
   aspect-ratio: 1110 / 1514;
-  flex: 0 1 165px;
+  /* flex-basis: auto -> boyut yukaridaki width'ten gelir. Sabit bir basis
+     (orn. 165px) width'i ezer ve svh siniri hic uygulanmazdi. */
+  flex: 0 1 auto;
   margin: 0;
 }
 
@@ -212,7 +215,9 @@ a {
   min-height: 100svh;
   flex-direction: column;
   justify-content: center;
-  padding: 78px 28px;
+  /* Ust bosluk kisa ekranlarda kuculur; 844 ve uzerinde 78px'te sabitlenir.
+     Alt bosluk sabit .quick-nav'i (14+48px) her zaman asar. */
+  padding: clamp(44px, 8svh, 78px) 28px 78px;
   text-align: center;
   isolation: isolate;
 }
@@ -297,14 +302,14 @@ p {
   /* Icerik dikeyde ortalanir; alt bosluk asagi oku VE sabit alt menuyu paylar. */
   justify-content: center;
   /* Alt bosluk: asagi ok (38px) + nefes payi + sabit alt menu (14+48px) buraya sigar. */
-  --hero-foot: clamp(120px, 15svh, 132px);
+  --hero-foot: clamp(106px, 14svh, 132px);
   /* .section'in shorthand'ini parca parca ezmemek icin burada da shorthand. */
-  padding: clamp(32px, 6svh, 60px) 28px var(--hero-foot);
+  padding: clamp(24px, 5svh, 60px) 28px var(--hero-foot);
 }
 
 .hero-welcome {
   width: min(100%, 330px);
-  margin: 0 auto 18px;
+  margin: 0 auto clamp(8px, 1.7svh, 14px);
   color: var(--ink);
   font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
   font-size: clamp(1.85rem, 8vw, 2.45rem);
@@ -319,7 +324,7 @@ p {
 
 .hero-calendar-strip {
   width: min(100%, 350px);
-  margin: 0 auto 24px;
+  margin: 0 auto clamp(12px, 2.8svh, 24px);
   color: var(--ink);
   text-align: center;
 }
@@ -456,15 +461,19 @@ p {
 .music-progress span {
   position: absolute;
   bottom: -8px;
-  /* --progress'i script.js her timeupdate'te .music-progress uzerinde gunceller. */
-  left: var(--progress, 0%);
+  left: 0;
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background: var(--ink);
-  transform: translateX(-50%);
+  /* Konum `left` yerine transform ile suruluyor. `left` layout ozelligi;
+     iOS Safari onu her karede yeniden hesaplarken tasan ::before kalbini
+     dogru temizleyemiyor ve nokta arkasinda kalp izi birakiyordu.
+     translate3d compositor katmaninda calisir, iz birakmaz.
+     --progress-x'i script.js her timeupdate'te piksel olarak gunceller. */
+  transform: translate3d(calc(var(--progress-x, 0px) - 50%), 0, 0);
   /* Sarki basa donunce script gecisi kapatir; nokta geri suzulmez. */
-  transition: left var(--progress-ease, 240ms) linear;
+  transition: transform var(--progress-ease, 240ms) linear;
 }
 
 .music-progress span::before {
@@ -579,7 +588,7 @@ p {
 
 .date-heading {
   width: min(100%, 330px);
-  margin: 0 auto 14px;
+  margin: 0 auto clamp(8px, 1.6svh, 14px);
 }
 
 .date-heading .section-kicker {
@@ -594,24 +603,15 @@ p {
 }
 
 .countdown-art {
-  width: min(100%, 340px);
-  margin: -4px auto 8px;
+  /* Tavan 340px (844+ ekranda aynen), kisa ekranda oranli kuculur. */
+  width: clamp(200px, 40svh, 340px);
+  margin: -4px auto 6px;
 }
 
 .countdown-art img {
   display: block;
   width: 100%;
   height: auto;
-}
-
-.countdown-note {
-  width: min(100%, 320px);
-  margin: 0 auto 22px;
-  color: var(--muted);
-  font-size: 0.96rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.72;
 }
 
 .countdown {
@@ -718,7 +718,7 @@ p {
 .timeline li {
   position: relative;
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: 60px 38px 1fr;
   align-items: start;
   min-height: 86px;
   padding: 16px 0;
@@ -730,16 +730,13 @@ p {
   border-bottom: 1.5px solid var(--line);
 }
 
-.timeline li::before {
-  content: "";
-  width: 11px;
-  height: 11px;
-  border: 2px solid var(--rose);
-  border-radius: 50%;
-  position: absolute;
-  top: 22px;
-  left: 58px;
-  background: var(--bg);
+/* Her maddenin kendi cizimi; eski gul rengi nokta yerine geciyor. */
+.timeline-doodle {
+  width: 30px;
+  height: 30px;
+  margin-top: 1px;
+  color: var(--rose);
+  overflow: visible;
 }
 
 .timeline time {
@@ -847,6 +844,18 @@ p {
   opacity: 0.55;
 }
 
+.countdown-line {
+  width: min(100%, 320px);
+  margin: clamp(8px, 1.5svh, 14px) auto 0;
+  /* Cumle degisince kutular ziplamasin diye sabit yer. */
+  min-height: 44px;
+  color: var(--rose);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
 .countdown-done {
   width: min(100%, 320px);
   margin: 6px auto 0;
@@ -924,6 +933,50 @@ p {
 
 .closing {
   min-height: 78svh;
+}
+
+/* "Geliyorum"a dokununca ucan kalpler. body'ye eklenir: .phone-shell'in
+   overflow:hidden'i ve bolumlerin isolation'i kirpmasin diye. */
+.kalp-katmani {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kalp {
+  position: absolute;
+  color: var(--rose);
+  font-size: 1.15rem;
+  line-height: 1;
+  opacity: 0;
+  animation: kalp-ucus 1.6s cubic-bezier(0.22, 0.6, 0.35, 1) forwards;
+  animation-delay: var(--gecikme, 0ms);
+  will-change: transform, opacity;
+}
+
+@keyframes kalp-ucus {
+  0% {
+    transform: translate3d(-50%, 0, 0) scale(0.4);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translate3d(calc(-50% + var(--x, 0px)), var(--y, -600px), 0)
+      scale(var(--olcek, 1))
+      rotate(var(--donus, 0deg));
+    opacity: 0;
+  }
 }
 
 .quick-nav {
@@ -1040,5 +1093,9 @@ p {
 
   .music-progress span {
     transition: none;
+  }
+
+  .kalp {
+    animation: none;
   }
 }
