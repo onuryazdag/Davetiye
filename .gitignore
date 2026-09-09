@@ -1,6 +1,7 @@
 # Yerel onizleme / karsilastirma dosyalari - canliya cikmaz
 takvim-alternatifleri.html
 fikirler-onizleme.html
+font-secenekleri.html
 .claude/
 
 # Muzik yedegi ve dinleme kopyasi - deploy edilmesin
@@ -10,3 +11,4 @@ music-96k.mp3
 # Ham gorsel kaynaklari - islenmis halleri assets/ altinda
 ChatGPT Image*.png
 WhatsApp Image*.jpeg
+/1.png

@@ -10,10 +10,29 @@
   --shadow: 0 18px 38px rgba(17, 17, 17, 0.08);
 }
 
+/* Patrick Hand, Google'dan degil kendi sunucumuzdan. Iki alt kume:
+   latin temel harfleri ve "i"yi, latin-ext ise I g G s S'yi tasiyor. */
 @font-face {
-  font-family: "Ink Free Local";
-  src: url("assets/Inkfree.ttf") format("truetype");
+  font-family: "Patrick Hand";
+  src: url("assets/patrick-hand-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Patrick Hand";
+  src: url("assets/patrick-hand-latin-ext.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
 }
 
 * {
@@ -44,7 +63,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   background: var(--bg);
 }
 
@@ -176,16 +195,12 @@ a {
   border-radius: 999px;
   color: #111;
   background: var(--bg-veil);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 1.1rem;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.03em;
   text-transform: none;
   box-shadow: none;
-  text-shadow:
-    0.35px 0 #111,
-    -0.35px 0 #111,
-    0 0.35px #111;
 }
 
 .music-toggle {
@@ -196,8 +211,8 @@ a {
   color: var(--ink);
   background: transparent;
   box-shadow: none;
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
-  font-weight: 900;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
+  font-weight: 400;
   text-transform: none;
 }
 
@@ -263,9 +278,9 @@ a {
 .section-kicker {
   margin: 0 0 14px;
   color: var(--muted);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -278,21 +293,17 @@ p {
 
 h2 {
   margin-bottom: 18px;
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: clamp(2rem, 9vw, 3rem);
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.02;
-  text-shadow:
-    0.35px 0 var(--ink),
-    -0.35px 0 var(--ink);
 }
 
 p {
   color: var(--muted);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 1.08rem;
-  font-style: italic;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.018em;
   line-height: 1.55;
 }
@@ -311,15 +322,11 @@ p {
   width: min(100%, 330px);
   margin: 0 auto clamp(8px, 1.7svh, 14px);
   color: var(--ink);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: clamp(1.85rem, 8vw, 2.45rem);
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.018em;
   line-height: 1.08;
-  text-shadow:
-    0.35px 0 var(--ink),
-    -0.35px 0 var(--ink);
 }
 
 .hero-calendar-strip {
@@ -340,8 +347,7 @@ p {
   display: block;
   color: var(--ink);
   font-size: 1rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.16em;
   line-height: 1;
   text-transform: uppercase;
@@ -355,7 +361,7 @@ p {
   margin: 12px 0 2px;
   color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.08em;
 }
 
@@ -385,8 +391,7 @@ p {
   gap: 1px;
   margin: 0;
   font-size: 1.02rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
 }
 
 .hero-calendar-days span,
@@ -446,8 +451,7 @@ p {
   gap: 10px;
   color: var(--ink);
   font-size: 1.02rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.025em;
 }
 
@@ -493,8 +497,7 @@ p {
   gap: 18px;
   color: var(--ink);
   font-size: 0.98rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
 }
 
 .music-time-total {
@@ -518,8 +521,7 @@ p {
   margin: 8px auto 0;
   color: var(--muted);
   font-size: 0.86rem;
-  font-style: italic;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 1.35;
   text-align: center;
@@ -601,12 +603,13 @@ p {
   margin: 0 auto clamp(14px, 2.6svh, 26px);
 }
 
+/* Cerceve yok: cizimin zemini site zemininin ayni tonu, sayfanin
+   bir parcasi gibi dursun diye kenarlik ve koseler kaldirildi. */
 .story-illustration img {
   display: block;
   width: 100%;
   height: auto;
-  border: 2px solid rgba(17, 17, 17, 0.18);
-  border-radius: 8px;
+  border: 0;
   box-shadow: none;
 }
 
@@ -674,14 +677,13 @@ p {
 .countdown strong {
   margin-top: 7px;
   font-size: 1.5rem;
-  font-style: italic;
-  font-weight: 650;
+  font-weight: 400;
   line-height: 1;
 }
 
 .countdown span {
   color: var(--muted);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 0.66rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -726,7 +728,7 @@ p {
   margin: -4px auto 24px;
   color: var(--muted);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 1.78;
 }
@@ -765,10 +767,9 @@ p {
 
 .timeline time {
   color: var(--rose);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 0.9rem;
-  font-style: italic;
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: 0.04em;
 }
 
@@ -776,19 +777,18 @@ p {
   display: block;
   margin-bottom: 5px;
   color: var(--ink);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 1.32rem;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.1;
 }
 
 .timeline span {
   display: block;
   color: var(--muted);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 1rem;
-  font-style: italic;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.018em;
   line-height: 1.52;
 }
@@ -822,10 +822,9 @@ p {
   margin: 10px auto 0;
   border: 2px solid var(--ink);
   border-radius: 999px;
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 1.08rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0.02em;
   text-decoration: none;
   text-transform: uppercase;
@@ -875,8 +874,7 @@ p {
   min-height: 44px;
   color: var(--rose);
   font-size: 1rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.4;
 }
 
@@ -885,8 +883,7 @@ p {
   margin: 6px auto 0;
   color: var(--rose);
   font-size: 1.12rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -912,8 +909,7 @@ p {
   margin-bottom: 12px;
   color: var(--ink);
   font-size: 1.4rem;
-  font-style: italic;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.1;
 }
 
@@ -932,7 +928,7 @@ p {
 .photo-share-copy {
   margin-bottom: 10px;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.018em;
   line-height: 1.62;
 }
@@ -1032,9 +1028,9 @@ p {
   justify-content: center;
   border-radius: 999px;
   color: var(--ink);
-  font-family: "Ink Free Local", "Segoe Print", "Comic Sans MS", cursive;
+  font-family: "Patrick Hand", "Segoe Print", "Bradley Hand", cursive;
   font-size: 0.9rem;
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: 0.07em;
   text-decoration: none;
   text-transform: uppercase;
