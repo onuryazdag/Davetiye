@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Davetiye Link Üretici</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* ------------------------------------------------------------------
+         SENIN ARACIN. Siteyle birlikte yayinlanir ama index.html buraya
+         link vermez ve noindex'tir; adresi bilmeyen bulamaz.
+         Adres: haticeveonur.vercel.app/link-uretici
+         ------------------------------------------------------------------ */
+
+      body {
+        padding: 24px 16px 60px;
+      }
+
+      .arac {
+        width: min(100%, 760px);
+        margin: 0 auto;
+      }
+
+      .arac h1 {
+        margin: 0 0 6px;
+        font-size: 1.8rem;
+        font-weight: 900;
+      }
+
+      .arac > p {
+        margin: 0 0 24px;
+        font-size: 0.92rem;
+      }
+
+      fieldset {
+        margin: 0 0 18px;
+        padding: 16px 18px 18px;
+        border: 1.5px solid var(--line);
+        border-radius: 14px;
+      }
+
+      legend {
+        padding: 0 8px;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      label {
+        display: block;
+        margin: 0 0 6px;
+        font-size: 0.84rem;
+        font-style: italic;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      input[type="text"],
+      textarea {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid rgba(17, 17, 17, 0.3);
+        border-radius: 10px;
+        color: var(--ink);
+        background: #fffdfa;
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      textarea {
+        min-height: 132px;
+        resize: vertical;
+      }
+
+      .ipucu {
+        margin: 8px 0 0;
+        font-size: 0.78rem;
+        line-height: 1.5;
+        opacity: 0.75;
+      }
+
+      .secenek {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 0.84rem;
+        font-style: italic;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .secenek input {
+        margin-top: 3px;
+      }
+
+      .dugmeler {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 4px 0 20px;
+      }
+
+      .dugme {
+        min-height: 44px;
+        padding: 0 20px;
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        color: var(--ink);
+        background: transparent;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-style: italic;
+        font-weight: 900;
+      }
+
+      .dugme.dolu {
+        color: var(--bg);
+        background: var(--ink);
+      }
+
+      .dugme:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      .onizleme {
+        margin: 0;
+        padding: 14px 16px;
+        border: 1.5px dashed rgba(17, 17, 17, 0.25);
+        border-radius: 12px;
+        color: var(--ink);
+        font-size: 1.05rem;
+        font-style: italic;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .onizleme small {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 6px;
+      }
+
+      th,
+      td {
+        padding: 9px 8px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.82rem;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      th {
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      td.ad {
+        font-style: italic;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      td.link {
+        width: 100%;
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+        font-size: 0.74rem;
+        overflow-wrap: anywhere;
+      }
+
+      td.islem {
+        white-space: nowrap;
+      }
+
+      .mini {
+        min-height: 32px;
+        margin-left: 6px;
+        padding: 0 12px;
+        border: 1.5px solid rgba(17, 17, 17, 0.35);
+        border-radius: 999px;
+        color: var(--ink);
+        background: transparent;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .mini.wa {
+        border-color: var(--rose);
+        color: var(--rose);
+      }
+
+      .mini.tamam {
+        color: var(--bg);
+        background: var(--ink);
+        border-color: var(--ink);
+      }
+
+      .durum {
+        margin: 14px 0 0;
+        font-size: 0.84rem;
+        font-style: italic;
+        font-weight: 800;
+        color: var(--rose);
+        min-height: 22px;
+      }
+
+      /* ---------------- Telefon ---------------- */
+      @media (max-width: 620px) {
+        body {
+          padding: 16px 12px 48px;
+        }
+
+        /* 16px altinda kalan alanlarda iOS Safari odaklaninca sayfayi
+           yakinlastiriyor; 16px bunu engelliyor. */
+        input[type="text"],
+        textarea {
+          font-size: 16px;
+        }
+
+        /* Tablo dar ekranda satir satir kart olur. */
+        table,
+        tbody,
+        tr,
+        td {
+          display: block;
+          width: auto;
+        }
+
+        thead {
+          display: none;
+        }
+
+        tr {
+          padding: 12px 0 14px;
+          border-bottom: 1px solid var(--line);
+        }
+
+        td {
+          padding: 1px 0;
+          border: 0;
+        }
+
+        td.ad {
+          font-size: 1.02rem;
+          white-space: normal;
+        }
+
+        td.link {
+          margin-top: 2px;
+          opacity: 0.8;
+        }
+
+        td.islem {
+          display: flex;
+          gap: 8px;
+          margin-top: 10px;
+        }
+
+        /* Parmakla rahat basilsin: tam genislik, 44px yukseklik. */
+        .mini {
+          flex: 1;
+          min-height: 44px;
+          margin-left: 0;
+          justify-content: center;
+          font-size: 0.86rem;
+        }
+
+        .dugmeler .dugme {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="arac">
+      <h1>Davetiye link üretici</h1>
+      <p>
+        Her misafir için isme özel link üretir. Misafir hiçbir şey yazmaz —
+        linki açtığında karşılama cümlesi ve katılım mesajı adıyla gelir.
+      </p>
+
+      <fieldset>
+        <legend>1 · Site adresi</legend>
+        <label for="taban">Davetiyenin adresi</label>
+        <input type="text" id="taban" value="https://haticeveonur.vercel.app/" />
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · İsimler</legend>
+        <label for="isimler">Her satıra bir isim</label>
+        <textarea id="isimler" spellcheck="false">Ayşe
+Mehmet Amca
+Zeynep &amp; Kaan
+Fatma Teyze</textarea>
+        <p class="ipucu">
+          Nasıl hitap etmek istiyorsan öyle yaz — "Ayşe", "Mehmet Amca",
+          "Zeynep &amp; Kaan" hepsi olur. Cümlede aynen böyle görünür.
+        </p>
+        <label class="secenek">
+          <input type="checkbox" id="kodla" />
+          <span>
+            Türkçe harfleri de kodla (<code>Ayşe</code> →
+            <code>Ay%C5%9Fe</code>). Kapalıyken link daha okunaklı görünür;
+            ikisi de sorunsuz çalışır.
+          </span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · WhatsApp mesajı</legend>
+        <label for="sablon"><code>{ad}</code> ve <code>{link}</code> yerlerine değerler girer</label>
+        <textarea id="sablon" style="min-height: 72px" spellcheck="false">Merhaba {ad}! Düğünümüze davetlisiniz. Davetiyemiz burada: {link}</textarea>
+      </fieldset>
+
+      <div class="dugmeler">
+        <button class="dugme dolu" id="uret" type="button">Linkleri üret</button>
+        <button class="dugme" id="hepsiniKopyala" type="button" disabled>
+          Hepsini kopyala
+        </button>
+      </div>
+
+      <p class="onizleme" id="onizleme">
+        &nbsp;
+        <small>Misafir siteyi açtığında bunu görecek</small>
+      </p>
+
+      <p class="durum" id="durum"></p>
+
+      <table id="tablo" hidden>
+        <thead>
+          <tr>
+            <th>İsim</th>
+            <th>Link</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="satirlar"></tbody>
+      </table>
+    </div>
+
+    <script>
+      const TURKCE = "çÇğĞıİöÖşŞüÜ";
+
+      const tabanEl = document.getElementById("taban");
+      const isimlerEl = document.getElementById("isimler");
+      const sablonEl = document.getElementById("sablon");
+      const kodlaEl = document.getElementById("kodla");
+      const onizlemeEl = document.getElementById("onizleme");
+      const tabloEl = document.getElementById("tablo");
+      const satirlarEl = document.getElementById("satirlar");
+      const durumEl = document.getElementById("durum");
+      const hepsiBtn = document.getElementById("hepsiniKopyala");
+
+      // Sitedeki davetliAdi() ile ayni temizlik: ne gorursen linke o girer.
+      function temizle(ad) {
+        return ad
+          .replace(/[^\p{L}\p{M}\s'’&.-]/gu, "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 24);
+      }
+
+      // Turkce harfler okunakli kalsin, gerisi kodlansin.
+      function adParametresi(ad) {
+        if (kodlaEl.checked) return encodeURIComponent(ad);
+        return [...ad]
+          .map((h) => (TURKCE.includes(h) ? h : encodeURIComponent(h)))
+          .join("");
+      }
+
+      function linkYap(ad) {
+        const taban = tabanEl.value.trim().replace(/[?&]+$/, "");
+        const ayrac = taban.includes("?") ? "&" : "?";
+        return `${taban}${ayrac}ad=${adParametresi(ad)}`;
+      }
+
+      function isimListesi() {
+        return isimlerEl.value
+          .split("\n")
+          .map((s) => temizle(s))
+          .filter(Boolean);
+      }
+
+      function onizlemeYaz() {
+        const ilk = isimListesi()[0];
+        onizlemeEl.firstChild.textContent = ilk
+          ? `${ilk}, hikâyemizin en güzel gününe hoş geldiniz.`
+          : "Hikâyemizin en güzel gününe hoş geldiniz.";
+      }
+
+      // iOS Safari'de execCommand yedegi duz select() ile calismaz; alani
+      // duzenlenebilir yapip Range ile secmek gerekiyor.
+      function eskiYolKopyala(metin) {
+        const kutu = document.createElement("textarea");
+        kutu.value = metin;
+        kutu.readOnly = false;
+        kutu.contentEditable = "true";
+        // 16px: iOS odaklaninca sayfayi yakinlastirmasin.
+        kutu.style.cssText =
+          "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px";
+        document.body.appendChild(kutu);
+
+        const aralik = document.createRange();
+        aralik.selectNodeContents(kutu);
+        const secim = window.getSelection();
+        secim.removeAllRanges();
+        secim.addRange(aralik);
+        kutu.setSelectionRange(0, metin.length);
+
+        let oldu = false;
+        try {
+          oldu = document.execCommand("copy");
+        } catch (hata) {
+          oldu = false;
+        }
+        secim.removeAllRanges();
+        kutu.remove();
+        return oldu;
+      }
+
+      // navigator.clipboard yalniz https/localhost'ta var. Once o denenir.
+      // ONEMLI: dokunustan sonra 'await' beklemeden cagriliyor, yoksa iOS
+      // kullanici etkilesimini yitirmis sayip reddediyor.
+      async function kopyala(metin) {
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(metin);
+            return true;
+          } catch (hata) {
+            return eskiYolKopyala(metin);
+          }
+        }
+        return eskiYolKopyala(metin);
+      }
+
+      function metniSec(dugum) {
+        try {
+          const aralik = document.createRange();
+          aralik.selectNodeContents(dugum);
+          const secim = window.getSelection();
+          secim.removeAllRanges();
+          secim.addRange(aralik);
+          return true;
+        } catch (hata) {
+          return false;
+        }
+      }
+
+      function bildir(metin) {
+        durumEl.textContent = metin;
+        clearTimeout(bildir.zaman);
+        bildir.zaman = setTimeout(() => {
+          durumEl.textContent = "";
+        }, 2600);
+      }
+
+      function uret() {
+        const isimler = isimListesi();
+        satirlarEl.textContent = "";
+
+        if (!isimler.length) {
+          tabloEl.hidden = true;
+          hepsiBtn.disabled = true;
+          bildir("Önce en az bir isim yaz.");
+          return;
+        }
+
+        isimler.forEach((ad) => {
+          const link = linkYap(ad);
+          const mesaj = sablonEl.value.replace(/\{ad\}/g, ad).replace(/\{link\}/g, link);
+
+          const tr = document.createElement("tr");
+
+          const tdAd = document.createElement("td");
+          tdAd.className = "ad";
+          tdAd.textContent = ad;
+
+          const tdLink = document.createElement("td");
+          tdLink.className = "link";
+          tdLink.textContent = link;
+
+          const tdIslem = document.createElement("td");
+          tdIslem.className = "islem";
+
+          const kopyaBtn = document.createElement("button");
+          kopyaBtn.type = "button";
+          kopyaBtn.className = "mini";
+          kopyaBtn.textContent = "Kopyala";
+          kopyaBtn.addEventListener("click", async () => {
+            const oldu = await kopyala(link);
+            kopyaBtn.textContent = oldu ? "Kopyalandı" : "Seçildi";
+            kopyaBtn.classList.toggle("tamam", oldu);
+            if (!oldu) {
+              // Pano calismadi: linki sec, basili tutup kopyalamak tek adim kalsin.
+              metniSec(tdLink);
+              bildir("Pano çalışmadı — link seçildi, basılı tutup kopyalayabilirsin.");
+            }
+            setTimeout(() => {
+              kopyaBtn.textContent = "Kopyala";
+              kopyaBtn.classList.remove("tamam");
+            }, 1900);
+          });
+
+          const waLink = document.createElement("a");
+          waLink.className = "mini wa";
+          waLink.textContent = "WhatsApp";
+          waLink.href = `https://wa.me/?text=${encodeURIComponent(mesaj)}`;
+          waLink.target = "_blank";
+          waLink.rel = "noreferrer";
+
+          tdIslem.append(kopyaBtn, waLink);
+          tr.append(tdAd, tdLink, tdIslem);
+          satirlarEl.appendChild(tr);
+        });
+
+        tabloEl.hidden = false;
+        hepsiBtn.disabled = false;
+        bildir(`${isimler.length} link hazır.`);
+      }
+
+      document.getElementById("uret").addEventListener("click", uret);
+
+      hepsiBtn.addEventListener("click", async () => {
+        // Sekmeyle ayrilmis: Excel/Sheets'e dogrudan yapistirilabilir.
+        const satirlar = isimListesi().map((ad) => `${ad}\t${linkYap(ad)}`);
+        const oldu = await kopyala(satirlar.join("\n"));
+        bildir(oldu ? `${satirlar.length} satır panoya kopyalandı.` : "Pano çalışmadı — linkleri tek tek kopyalamayı deneyebilirsin.");
+      });
+
+      // ---- Girilenleri bu tarayicida sakla ----
+      const DEPO = "haticeveonur:link-uretici";
+
+      function kaydet() {
+        try {
+          localStorage.setItem(
+            DEPO,
+            JSON.stringify({
+              isimler: isimlerEl.value,
+              taban: tabanEl.value,
+              sablon: sablonEl.value,
+              kodla: kodlaEl.checked,
+            })
+          );
+        } catch (hata) {
+          // Gizli sekme veya depolama kapali: sorun degil, sayfa yine calisir.
+        }
+      }
+
+      function yukle() {
+        try {
+          const ham = localStorage.getItem(DEPO);
+          if (!ham) return;
+          const kayit = JSON.parse(ham);
+          if (typeof kayit.isimler === "string") isimlerEl.value = kayit.isimler;
+          if (typeof kayit.taban === "string" && kayit.taban.trim()) tabanEl.value = kayit.taban;
+          if (typeof kayit.sablon === "string" && kayit.sablon.trim()) sablonEl.value = kayit.sablon;
+          if (typeof kayit.kodla === "boolean") kodlaEl.checked = kayit.kodla;
+        } catch (hata) {
+          // Bozuk kayit: varsayilanlarla devam.
+        }
+      }
+
+      [isimlerEl, tabanEl, sablonEl].forEach((el) => el.addEventListener("input", kaydet));
+      kodlaEl.addEventListener("change", kaydet);
+
+      isimlerEl.addEventListener("input", onizlemeYaz);
+
+      yukle();
+      onizlemeYaz();
+      uret();
+    </script>
+  </body>
+</html>
