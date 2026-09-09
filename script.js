@@ -1,8 +1,8 @@
-const INVITE = {
+﻿const INVITE = {
   weddingDate: "2026-09-24T19:00:00+03:00",
   // Katilim mesajlarinin gelecegi WhatsApp numarasi.
   // Ulke kodu ile, bosluksuz ve + isareti olmadan yazin. Ornek: "905321234567"
-  whatsappNumber: "905XXXXXXXXX",
+  whatsappNumber: "905537450744",
   photoUploadUrl:
     "https://drive.google.com/drive/folders/1O6YldP59B-Qid-7puYtfDL4yb4HbZoGg?usp=drive_link",
   musicUrl: "music.mp3",
