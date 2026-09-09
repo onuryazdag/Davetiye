@@ -126,9 +126,9 @@ function updateCountdown() {
 }
 
 const WHATSAPP_MESSAGES = {
-  yes: "Merhaba! Düğününüze geliyoruz. Adım: ",
-  no: "Merhaba! Maalesef düğününüze katılamayacağım. Adım: ",
-  maybe: "Merhaba! Düğün için durumum henüz net değil, en kısa sürede kesinleştireceğim. Adım: ",
+  yes: "Merhaba! 24 Eylül'e başka plan yapmadık, geliyoruz. Adım: ",
+  no: "Merhaba! Ne yazık ki o gün aranızda olamayacağım ama kalbim sizinle, en güzel gününüz olsun. Adım: ",
+  maybe: "Merhaba! Henüz takvimle pazarlık halindeyim, netleşir netleşmez haber vereceğim. Adım: ",
 };
 
 function setupWhatsappRsvp() {
