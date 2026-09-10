@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#fdf6f0" />
+    <meta
+      name="description"
+      content="Hatice ve Onur'un düğününden çektiğiniz fotoğraf ve videoları paylaşın."
+    />
+    <title>Fotoğraf &amp; Video Yükle | Hatice &amp; Onur</title>
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="yukle-govde">
+    <main class="phone-shell" aria-label="Fotoğraf ve video yükleme">
+      <section class="section yukle">
+        <!-- ---------- Seçim / yükleme ekranı ---------- -->
+        <div id="yukle-ana">
+          <p class="section-kicker">Fotoğraf &amp; Video</p>
+          <h1 class="yukle-baslik">Bu geceyi sizin gözünüzden de görelim</h1>
+          <p class="yukle-alt">
+            Çektiğiniz fotoğraf ve videoları seçip bize bırakabilirsiniz.
+          </p>
+
+          <!-- Native dosya secici. Gorunmez ama erisilebilir; asagidaki buton acar. -->
+          <input
+            class="sr-only"
+            type="file"
+            id="dosya-secici"
+            accept="image/*,video/*"
+            multiple
+            aria-label="Yüklenecek fotoğraf ve videoları seçin"
+          />
+
+          <button class="button primary yukle-sec" id="sec-butonu" type="button">
+            Fotoğraf &amp; Video Seç
+          </button>
+
+          <p class="yukle-ozet" id="ozet" role="status" aria-live="polite"></p>
+
+          <ul class="yukle-liste" id="liste" aria-label="Seçilen dosyalar"></ul>
+
+          <div class="yukle-eylemler" id="eylemler" hidden>
+            <button class="button primary" id="yukle-butonu" type="button">
+              Yüklemeyi Başlat
+            </button>
+            <button class="button quiet" id="tekrar-butonu" type="button" hidden>
+              Başarısızları Tekrar Dene
+            </button>
+          </div>
+
+          <p class="yukle-not">
+            Fotoğraflar telefonunuzda küçültülerek gönderilir; videolar olduğu gibi
+            yüklenir. Tek fotoğraf en fazla 25 MB, tek video en fazla 500 MB olabilir.
+          </p>
+        </div>
+
+        <!-- ---------- Tamamlandı ekranı ---------- -->
+        <div id="yukle-bitti" tabindex="-1" hidden>
+          <p class="yukle-bitti-ikon" aria-hidden="true">🤍</p>
+          <h1 class="yukle-baslik">Anılarınız bize ulaştı</h1>
+          <p class="yukle-alt">
+            Biz eğlenmeye devam ederken siz de çekmeye devam edin.
+          </p>
+          <p class="yukle-ozet" id="bitti-ozet"></p>
+
+          <div class="yukle-eylemler">
+            <button class="button primary" id="daha-ekle" type="button">
+              Daha Fazla Ekle
+            </button>
+            <a class="button secondary" href="/">Davetiyeye Dön</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="yukle.js"></script>
+  </body>
+</html>

@@ -15,3 +15,6 @@ WhatsApp Image*.jpeg
 /end.png
 /mekan.png
 /ateslyon.png
+
+# Bagimliliklar - Vercel package.json"dan kendisi kurar
+node_modules/

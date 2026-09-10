@@ -3,8 +3,6 @@
   // Katilim mesajlarinin gelecegi WhatsApp numarasi.
   // Ulke kodu ile, bosluksuz ve + isareti olmadan yazin. Ornek: "905321234567"
   whatsappNumber: "905537450744",
-  photoUploadUrl:
-    "https://drive.google.com/drive/folders/1O6YldP59B-Qid-7puYtfDL4yb4HbZoGg?usp=drive_link",
   // ?v=2: vercel.json bu dosyaya 1 yillik immutable cache veriyor. Dosyayi
   // degistirdigimizde eski ziyaretcinin tarayicisi eskisini sunmasin diye surum eki.
   musicUrl: "music.mp3?v=4",
@@ -319,8 +317,6 @@ function setupWhatsappRsvp() {
 kisiselKarsilama();
 setupWhatsappRsvp();
 setLink("maps-link", INVITE.mapsUrl, "Harita linki henüz eklenmedi.");
-setLink("photo-link", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz eklenmedi.");
-setLink("photo-link-button", INVITE.photoUploadUrl, "Fotoğraf yükleme linki henüz eklenmedi.");
 
 if (music && INVITE.musicUrl) {
   // Kaynagi burada bagliyoruz ki preload="metadata" isini yapabilsin:
