@@ -312,8 +312,10 @@ p {
   min-height: 100svh;
   /* Icerik dikeyde ortalanir; alt bosluk asagi oku VE sabit alt menuyu paylar. */
   justify-content: center;
-  /* Alt bosluk: asagi ok (38px) + nefes payi + sabit alt menu (14+48px) buraya sigar. */
-  --hero-foot: clamp(106px, 14svh, 132px);
+  /* Ipucu artik metin + ok: ~56px. Alt bosluk bunu, nefes payini ve
+     sabit alt menuyu (14+48px) birlikte tasimali. */
+  --ipucu-yuksekligi: 56px;
+  --hero-foot: clamp(140px, 16svh, 150px);
   /* .section'in shorthand'ini parca parca ezmemek icin burada da shorthand. */
   padding: clamp(24px, 5svh, 60px) 28px var(--hero-foot);
 }
@@ -574,26 +576,58 @@ p {
 .scroll-cue {
   position: absolute;
   right: 0;
-  /* Hero'nun alt bosluguna gore konumlanir: her ekran yuksekliginde
-     hem son icerigin altinda hem sabit alt menunun ustunde kalir. */
-  bottom: calc(var(--hero-foot, 120px) - 44px);
+  /* Ust kenari son icerigin 8px altinda kalacak sekilde konumlanir;
+     boylece her ekran yuksekliginde hem icerikle hem alt menuyle arasi acik. */
+  bottom: calc(var(--hero-foot, 140px) - var(--ipucu-yuksekligi, 56px) - 8px);
   left: 0;
+  display: grid;
+  width: fit-content;
+  justify-items: center;
+  gap: 5px;
+  margin: auto;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.scroll-cue-text {
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+/* Ok zipliyor: sayfanin devami oldugu ilk bakista anlasilsin diye. */
+.scroll-cue-arrow {
   display: grid;
   width: 38px;
   height: 38px;
   place-items: center;
-  margin: auto;
   border: 1.5px solid var(--ink);
   border-radius: 999px;
-  text-decoration: none;
+  animation: kaydir-ipucu 1.9s ease-in-out infinite;
 }
 
-.scroll-cue span {
+.scroll-cue-arrow::before {
+  content: "";
   width: 10px;
   height: 10px;
   border-right: 1.5px solid var(--ink);
   border-bottom: 1.5px solid var(--ink);
   transform: rotate(45deg) translate(-2px, -2px);
+}
+
+@keyframes kaydir-ipucu {
+  0% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(6px);
+  }
+
+  60%,
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .story-illustration {
@@ -1126,6 +1160,10 @@ p {
   }
 
   .kalp {
+    animation: none;
+  }
+
+  .scroll-cue-arrow {
     animation: none;
   }
 
