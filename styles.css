@@ -944,12 +944,21 @@ p {
   display: grid;
   width: min(100%, 300px);
   gap: 10px;
-  margin: 12px auto 4px;
+  /* Alt bosluk .form-note'a birakildi; ikisi toplanmasin diye burasi 0. */
+  margin: 12px auto 0;
 }
 
 .rsvp-choices .button {
   width: 100%;
   margin: 0;
+}
+
+.form-note {
+  /* .section flex oldugu icin kardesler arasinda margin collapse YOK: bu notun
+     ustundeki bosluk .rsvp-choices'in 4px'lik alt marjiyla toplaniyor, altindaki
+     ise .photo-share'in 12px'lik ust marjiyla. Not "Henuz net degil" butonuna
+     yapisik duruyordu; iki tarafi da buradan dengeliyoruz. */
+  margin: clamp(12px, 2svh, 18px) auto clamp(6px, 1svh, 9px);
 }
 
 .button.quiet {
