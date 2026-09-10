@@ -711,14 +711,30 @@ p {
 
 .countdown-art {
   /* Tavan 340px (844+ ekranda aynen), kisa ekranda oranli kuculur. */
+  position: relative;
   width: clamp(200px, 40svh, 340px);
-  margin: -4px auto 6px;
+  /* Dosya 1200x1200 kare, ama cizim yalnizca 397-745 satirlari arasinda; ustte
+     %33, altta %38 seffaf bosluk var. Kutuyu cizimin seridine gore kuruyoruz
+     ki baslik ile sayac arasinda ~240px gorunmez bosluk kalmasin. Kirpmayi
+     CSS'te yapiyoruz: assets/ kalici onbellekli oldugu icin dosyaya dokunmak
+     yeni dosya adi gerektirirdi. */
+  aspect-ratio: 1200 / 349;
+  overflow: hidden;
+  margin: clamp(10px, 2svh, 18px) auto clamp(14px, 2.6svh, 24px);
+}
+
+.countdown-art picture {
+  display: block;
 }
 
 .countdown-art img {
   display: block;
   width: 100%;
   height: auto;
+  /* Yuzdeli transform ogenin KENDI boyutuna gore cozulur; gorsel kare oldugu
+     icin -33.083% tam 397/1200 kadar yukari kaydirir. Kirpma boylece ekran
+     genisliginden bagimsiz, her boyutta ayni yerden olur. */
+  transform: translateY(-33.083%);
 }
 
 .countdown {
