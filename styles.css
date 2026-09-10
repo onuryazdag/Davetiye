@@ -1003,28 +1003,52 @@ p {
 }
 
 
-.photo-share {
-  width: min(100%, 300px);
-  margin: 12px auto 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-  text-align: center;
+.photo-upload {
+  min-height: 100svh;
 }
 
-.photo-share-title {
+.photo-upload-illustration {
+  width: clamp(210px, 36svh, 326px);
+  margin: 0 auto clamp(12px, 2.2svh, 20px);
+}
+
+.photo-upload-illustration img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  box-shadow: none;
+}
+
+.photo-upload h2 {
   margin-bottom: 12px;
-  color: var(--ink);
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 1.1;
 }
 
-.photo-share-copy {
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  font-weight: 400;
-  letter-spacing: 0.018em;
-  line-height: 1.62;
+.photo-upload > p:not(.section-kicker) {
+  width: min(100%, 320px);
+  margin-right: auto;
+  margin-bottom: 12px;
+  margin-left: auto;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+/* Yukleme, ikincil bir secenek degil: sayfadan ayrilan belirgin ana eylem. */
+.button.photo-upload-button {
+  width: min(100%, 320px);
+  min-height: 58px;
+  margin-top: 2px;
+  border-color: var(--rose);
+  background: var(--rose);
+  box-shadow: 0 8px 18px rgba(197, 57, 48, 0.2);
+  color: var(--bg);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.button.photo-upload-button:hover {
+  background: var(--ink);
+  border-color: var(--ink);
 }
 
 .heart-club {
