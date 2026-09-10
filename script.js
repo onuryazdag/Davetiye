@@ -23,6 +23,8 @@ const heroWelcome = document.querySelector(".hero-welcome");
 const phoneShell = document.querySelector(".phone-shell");
 const quickNav = document.querySelector(".quick-nav");
 const ilerleme = document.getElementById("ilerleme");
+const ilerlemeNotBaslik = document.querySelector(".ilerleme-not strong");
+const ilerlemeNotMetin = document.querySelector(".ilerleme-not > span");
 const countdownDone = document.getElementById("countdown-done");
 const countdownLine = document.getElementById("countdown-line");
 const countdown = document.querySelector(".countdown");
@@ -173,12 +175,65 @@ function basaSar() {
 
 // --- Sag kenardaki ilerleme seridi --------------------------------------
 
-// Kapak kalktiktan kac ms sonra kalp kullaniciyi durtsun.
-const CAGRI_GECIKMESI = 4000;
-// Nottan sonra kendi kendine kac ms'de cekilsin.
-const CAGRI_SURESI = 4200;
+// Kapak kalktiktan 2 saniye sonra, kaydirmayi acikca tarif eden ilk cagri gelir.
+const CAGRI_GECIKMESI = 2000;
+// Kullanici hala tepede ise iki saniye sonra bir kez daha yinelenir.
+const CAGRI_TEKRAR_ARALIGI = 2000;
+const CAGRI_SAYISI = 2;
+// Her not, bir sonraki tekrardan once sakin sekilde kaybolur.
+const CAGRI_SURESI = 1600;
+// Ikinci cagridan bir saniye sonra turu kendimiz devam ettiririz.
+const TUR_ANONSU_GECIKMESI =
+  CAGRI_GECIKMESI + CAGRI_TEKRAR_ARALIGI + 1000;
+const TUR_ANONSU_SURESI = 1000;
 
 let ilerlemeBekleyen = false;
+let kaydirmaKesfedildi = false;
+let cagriZamanlayicilari = [];
+
+function cagrilariKapat() {
+  cagriZamanlayicilari.forEach((zamanlayici) => window.clearTimeout(zamanlayici));
+  cagriZamanlayicilari = [];
+  ilerleme?.classList.remove("is-cagiriyor", "is-tur-anonsu");
+}
+
+function ilerlemeNotunuYaz(baslik, metin) {
+  if (ilerlemeNotBaslik) ilerlemeNotBaslik.textContent = baslik;
+  if (ilerlemeNotMetin) ilerlemeNotMetin.textContent = metin;
+}
+
+function cagriyiGoster() {
+  if (kaydirmaKesfedildi || window.scrollY > 40 || !ilerleme) return;
+
+  ilerlemeNotunuYaz("Aşağı kaydır ↓", "Davetiyenin devamı aşağıda");
+  // Sinif yeniden eklendiginde kalp animasyonunun her cagrida bastan oynamasi gerekir.
+  ilerleme.classList.remove("is-cagiriyor");
+  void ilerleme.offsetWidth;
+  ilerleme.classList.add("is-cagiriyor");
+  cagriZamanlayicilari.push(
+    window.setTimeout(() => ilerleme.classList.remove("is-cagiriyor"), CAGRI_SURESI)
+  );
+}
+
+function davetiyeTuruneDevamEt() {
+  if (kaydirmaKesfedildi || window.scrollY > 40 || !ilerleme) return;
+
+  ilerlemeNotunuYaz("Biz sizin için", "davetiye turumuza devam ediyoruz");
+  ilerleme.classList.remove("is-cagiriyor");
+  void ilerleme.offsetWidth;
+  ilerleme.classList.add("is-tur-anonsu");
+
+  cagriZamanlayicilari.push(
+    window.setTimeout(() => {
+      if (kaydirmaKesfedildi || window.scrollY > 40) return;
+
+      // Otomatik gecis yalnizca ilk ekranda hic hareket edilmemisse calisir.
+      kaydirmaKesfedildi = true;
+      cagrilariKapat();
+      document.getElementById("davet")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, TUR_ANONSU_SURESI)
+  );
+}
 
 function ilerlemeGuncelle() {
   ilerlemeBekleyen = false;
@@ -190,8 +245,12 @@ function ilerlemeGuncelle() {
 }
 
 function ilerlemeTetikle() {
-  // Kaydirma sirasinda kullanici zaten yolu bulmus; not yolundan cekilsin.
-  ilerleme?.classList.remove("is-cagiriyor");
+  // Ilk kaydirma, kullanicinin sayfanin devamini kesfettigini gosterir.
+  // Bu andan sonra dikkatini tekrar tekrar bolmeyelim.
+  if (window.scrollY > 40 && !kaydirmaKesfedildi) {
+    kaydirmaKesfedildi = true;
+    cagrilariKapat();
+  }
 
   if (!ilerlemeBekleyen) {
     ilerlemeBekleyen = true;
@@ -208,14 +267,12 @@ function seridiBaslat() {
   window.addEventListener("scroll", ilerlemeTetikle, { passive: true });
   window.addEventListener("resize", ilerlemeTetikle);
 
-  window.setTimeout(() => {
-    // Bu arada kaydirmaya baslamissa sayfanin devami oldugunu anlamis
-    // demektir; ustune bir de not cikarmayalim.
-    if (window.scrollY > 40) return;
-
-    ilerleme.classList.add("is-cagiriyor");
-    window.setTimeout(() => ilerleme.classList.remove("is-cagiriyor"), CAGRI_SURESI);
-  }, CAGRI_GECIKMESI);
+  for (let sira = 0; sira < CAGRI_SAYISI; sira++) {
+    cagriZamanlayicilari.push(
+      window.setTimeout(cagriyiGoster, CAGRI_GECIKMESI + sira * CAGRI_TEKRAR_ARALIGI)
+    );
+  }
+  cagriZamanlayicilari.push(window.setTimeout(davetiyeTuruneDevamEt, TUR_ANONSU_GECIKMESI));
 }
 
 function setupScrollReveal() {
