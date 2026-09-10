@@ -3,6 +3,9 @@
   // Katilim mesajlarinin gelecegi WhatsApp numarasi.
   // Ulke kodu ile, bosluksuz ve + isareti olmadan yazin. Ornek: "905321234567"
   whatsappNumber: "905537450744",
+  // Hatice'nin numarasini ulke koduyla, bosluksuz ve + isareti olmadan buraya yazin.
+  // Ornek: "905321234567"
+  brideWhatsappNumber: "905541387152",
   // ?v=2: vercel.json bu dosyaya 1 yillik immutable cache veriyor. Dosyayi
   // degistirdigimizde eski ziyaretcinin tarayicisi eskisini sunmasin diye surum eki.
   musicUrl: "music.mp3?v=4",
@@ -186,14 +189,36 @@ const CAGRI_SURESI = 1600;
 const TUR_ANONSU_GECIKMESI =
   CAGRI_GECIKMESI + CAGRI_TEKRAR_ARALIGI + 1000;
 const TUR_ANONSU_SURESI = 1000;
+// "Bizimle olun" bolumunde bir kez daha yol gosterilir; sonra tarih bolumune gecilir.
+const IKINCI_TUR_CAGRI_GECIKMESI = 4000;
+const IKINCI_TUR_GECIS_GECIKMESI = 4000;
+// Tarih ve sonraki bolumlerde sayfa kendi hareket etmez, yalnizca hatirlatir.
+const DURAKLAMA_HATIRLATMA_GECIKMESI = 5000;
+const OTOMATIK_GECIS_OTURMA_SURESI = 900;
 
 let ilerlemeBekleyen = false;
-let kaydirmaKesfedildi = false;
 let cagriZamanlayicilari = [];
+let duraklamaHatirlatmaZamanlayicisi = 0;
+let turAsamasi = "hero";
+let otomatikGecisAktif = false;
+
+function zamanlayiciEkle(islem, gecikme) {
+  const zamanlayici = window.setTimeout(islem, gecikme);
+  cagriZamanlayicilari.push(zamanlayici);
+  return zamanlayici;
+}
+
+function duraklamaHatirlatmasiniKapat() {
+  if (duraklamaHatirlatmaZamanlayicisi) {
+    window.clearTimeout(duraklamaHatirlatmaZamanlayicisi);
+    duraklamaHatirlatmaZamanlayicisi = 0;
+  }
+}
 
 function cagrilariKapat() {
   cagriZamanlayicilari.forEach((zamanlayici) => window.clearTimeout(zamanlayici));
   cagriZamanlayicilari = [];
+  duraklamaHatirlatmasiniKapat();
   ilerleme?.classList.remove("is-cagiriyor", "is-tur-anonsu");
 }
 
@@ -202,37 +227,76 @@ function ilerlemeNotunuYaz(baslik, metin) {
   if (ilerlemeNotMetin) ilerlemeNotMetin.textContent = metin;
 }
 
-function cagriyiGoster() {
-  if (kaydirmaKesfedildi || window.scrollY > 40 || !ilerleme) return;
-
+function kalpHatirlatmasiniGoster() {
+  if (!ilerleme) return;
   ilerlemeNotunuYaz("Aşağı kaydır ↓", "Davetiyenin devamı aşağıda");
   // Sinif yeniden eklendiginde kalp animasyonunun her cagrida bastan oynamasi gerekir.
-  ilerleme.classList.remove("is-cagiriyor");
+  ilerleme.classList.remove("is-cagiriyor", "is-tur-anonsu");
   void ilerleme.offsetWidth;
   ilerleme.classList.add("is-cagiriyor");
-  cagriZamanlayicilari.push(
-    window.setTimeout(() => ilerleme.classList.remove("is-cagiriyor"), CAGRI_SURESI)
-  );
+  zamanlayiciEkle(() => ilerleme.classList.remove("is-cagiriyor"), CAGRI_SURESI);
+}
+
+function cagriyiGoster() {
+  if (turAsamasi !== "hero" || window.scrollY > 40) return;
+  kalpHatirlatmasiniGoster();
+}
+
+function tarihVeyaSonrasindaMi() {
+  const tarih = document.getElementById("tarih");
+  return !!tarih && window.scrollY >= tarih.offsetTop - 80;
+}
+
+function duraklamaHatirlatmasiniPlanla() {
+  duraklamaHatirlatmasiniKapat();
+  if (turAsamasi !== "date") return;
+
+  duraklamaHatirlatmaZamanlayicisi = window.setTimeout(() => {
+    duraklamaHatirlatmaZamanlayicisi = 0;
+    if (turAsamasi !== "date") return;
+
+    kalpHatirlatmasiniGoster();
+    // Kullanici hala ayni yerdeyse bes saniye sonra sadece bir kez daha hatirlat.
+    duraklamaHatirlatmasiniPlanla();
+  }, DURAKLAMA_HATIRLATMA_GECIKMESI);
+}
+
+function bolumeGec(id, sonrakiAsama) {
+  if (!document.getElementById(id)) return;
+
+  cagrilariKapat();
+  turAsamasi = sonrakiAsama;
+  otomatikGecisAktif = true;
+  document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
+
+  zamanlayiciEkle(() => {
+    otomatikGecisAktif = false;
+    if (turAsamasi !== sonrakiAsama) return;
+
+    if (sonrakiAsama === "intro") {
+      zamanlayiciEkle(() => {
+        if (turAsamasi === "intro" && !otomatikGecisAktif) kalpHatirlatmasiniGoster();
+      }, IKINCI_TUR_CAGRI_GECIKMESI);
+      zamanlayiciEkle(() => {
+        if (turAsamasi === "intro" && !otomatikGecisAktif) bolumeGec("tarih", "date");
+      }, IKINCI_TUR_CAGRI_GECIKMESI + IKINCI_TUR_GECIS_GECIKMESI);
+    } else if (sonrakiAsama === "date") {
+      duraklamaHatirlatmasiniPlanla();
+    }
+  }, OTOMATIK_GECIS_OTURMA_SURESI);
 }
 
 function davetiyeTuruneDevamEt() {
-  if (kaydirmaKesfedildi || window.scrollY > 40 || !ilerleme) return;
+  if (turAsamasi !== "hero" || window.scrollY > 40 || !ilerleme) return;
 
   ilerlemeNotunuYaz("Biz sizin için", "davetiye turumuza devam ediyoruz");
   ilerleme.classList.remove("is-cagiriyor");
   void ilerleme.offsetWidth;
   ilerleme.classList.add("is-tur-anonsu");
 
-  cagriZamanlayicilari.push(
-    window.setTimeout(() => {
-      if (kaydirmaKesfedildi || window.scrollY > 40) return;
-
-      // Otomatik gecis yalnizca ilk ekranda hic hareket edilmemisse calisir.
-      kaydirmaKesfedildi = true;
-      cagrilariKapat();
-      document.getElementById("davet")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, TUR_ANONSU_SURESI)
-  );
+  zamanlayiciEkle(() => {
+    if (turAsamasi === "hero" && window.scrollY <= 40) bolumeGec("davet", "intro");
+  }, TUR_ANONSU_SURESI);
 }
 
 function ilerlemeGuncelle() {
@@ -245,11 +309,16 @@ function ilerlemeGuncelle() {
 }
 
 function ilerlemeTetikle() {
-  // Ilk kaydirma, kullanicinin sayfanin devamini kesfettigini gosterir.
-  // Bu andan sonra dikkatini tekrar tekrar bolmeyelim.
-  if (window.scrollY > 40 && !kaydirmaKesfedildi) {
-    kaydirmaKesfedildi = true;
+  // Kullanici turu kendi kaydirarak devralirsa otomatik gecisler iptal edilir.
+  if (!otomatikGecisAktif && window.scrollY > 40 && turAsamasi !== "date") {
+    turAsamasi = tarihVeyaSonrasindaMi() ? "date" : "manuel";
     cagrilariKapat();
+  }
+
+  // Tarihe gelindikten sonra kaydirma sadece bes saniyelik hatirlatma saatini yeniler;
+  // sayfa bir daha kendiliginden hareket etmez.
+  if (turAsamasi === "date") {
+    duraklamaHatirlatmasiniPlanla();
   }
 
   if (!ilerlemeBekleyen) {
@@ -268,11 +337,9 @@ function seridiBaslat() {
   window.addEventListener("resize", ilerlemeTetikle);
 
   for (let sira = 0; sira < CAGRI_SAYISI; sira++) {
-    cagriZamanlayicilari.push(
-      window.setTimeout(cagriyiGoster, CAGRI_GECIKMESI + sira * CAGRI_TEKRAR_ARALIGI)
-    );
+    zamanlayiciEkle(cagriyiGoster, CAGRI_GECIKMESI + sira * CAGRI_TEKRAR_ARALIGI);
   }
-  cagriZamanlayicilari.push(window.setTimeout(davetiyeTuruneDevamEt, TUR_ANONSU_GECIKMESI));
+  zamanlayiciEkle(davetiyeTuruneDevamEt, TUR_ANONSU_GECIKMESI);
 }
 
 function setupScrollReveal() {
@@ -344,7 +411,7 @@ function updateCountdown() {
   }
 }
 
-const KALP_SAYISI = 26;
+const KALP_SAYISI = 48;
 const azHareket = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 // "Geliyorum"a dokununca ekrani dolduran kalpler. Katman body'ye eklenir:
@@ -387,56 +454,58 @@ const WHATSAPP_MESSAGES = {
 
 function setupWhatsappRsvp() {
   const buttons = document.querySelectorAll(".rsvp-choice");
-  if (!buttons.length) return;
+  const dialog = document.getElementById("recipient-dialog");
+  const brideButton = document.getElementById("message-bride");
+  const groomButton = document.getElementById("message-groom");
+  const dialogNote = document.getElementById("recipient-dialog-note");
+  if (!buttons.length || !dialog || !brideButton || !groomButton) return;
 
-  const number = (INVITE.whatsappNumber || "").replace(/\D/g, "");
-  const isConfigured = number && !INVITE.whatsappNumber.includes("X");
+  const numarayiHazirla = (numara) => String(numara || "").replace(/\D/g, "");
+  const damatNumarasi = numarayiHazirla(INVITE.whatsappNumber);
+  const gelinNumarasi = numarayiHazirla(INVITE.brideWhatsappNumber);
+  const numaraAyarliMi = (numara, kaynak) => numara && !String(kaynak || "").includes("X");
+  const damatAyarli = numaraAyarliMi(damatNumarasi, INVITE.whatsappNumber);
+  const gelinAyarli = numaraAyarliMi(gelinNumarasi, INVITE.brideWhatsappNumber);
+  let seciliCevap = null;
+  let kaynakButon = null;
+
+  function whatsappAc(numara) {
+    if (!seciliCevap || !numara) return;
+
+    const url = `https://wa.me/${numara}?text=${encodeURIComponent(seciliCevap.mesaj)}`;
+    const yonlendir = () => {
+      const yeniSekme = window.open(url, "_blank");
+      if (!yeniSekme) window.location.href = url;
+    };
+
+    dialog.close();
+    if (seciliCevap.anahtar === "yes" && !azHareket.matches && kaynakButon) {
+      kalpPatlat(kaynakButon);
+      // Kalpler gorunsun; gecikmeli pencere engellenirse ayni sekmede acilir.
+      window.setTimeout(yonlendir, 1000);
+    } else {
+      yonlendir();
+    }
+  }
+
+  brideButton.addEventListener("click", () => whatsappAc(gelinNumarasi));
+  groomButton.addEventListener("click", () => whatsappAc(damatNumarasi));
 
   buttons.forEach((button) => {
     const key = button.dataset.wa;
     // Mesajlar ": " ile bitiyor; isim varsa dogrudan arkasina ekleniyor.
     const message = (WHATSAPP_MESSAGES[key] || WHATSAPP_MESSAGES.maybe) + DAVETLI;
-
-    if (!isConfigured) {
-      button.href = "#";
-      button.setAttribute("aria-disabled", "true");
-      button.addEventListener("click", (event) => {
-        event.preventDefault();
-        alert("WhatsApp numarası henüz eklenmedi.");
-      });
-      return;
-    }
-
-    button.href = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-    button.target = "_blank";
-    button.rel = "noreferrer";
-
-    // Sadece "Geliyorum": once kalpler ucsun, WhatsApp bir saniye sonra acilsin.
-    // JS calismazsa link her halukarda normal davranir.
-    if (key !== "yes") return;
-
-    let bekleyen = 0;
     button.addEventListener("click", (event) => {
-      // Hareket hassasiyeti aciksa animasyon yok, link dogrudan acilir.
-      if (azHareket.matches) return;
-
-      // Sabirsiz ikinci dokunus: beklemeyi iptal et, linki normal ac.
-      if (bekleyen) {
-        clearTimeout(bekleyen);
-        bekleyen = 0;
-        return;
-      }
-
       event.preventDefault();
-      kalpPatlat(button);
-
-      bekleyen = setTimeout(() => {
-        bekleyen = 0;
-        // Gecikmeli window.open mobilde acilir pencere engeline takilabilir.
-        // Engellenirse ayni sekmede aciyoruz; yonlendirme hicbir zaman engellenmez.
-        const yeniSekme = window.open(button.href, "_blank");
-        if (!yeniSekme) window.location.href = button.href;
-      }, 1000);
+      seciliCevap = { anahtar: key, mesaj: message };
+      kaynakButon = button;
+      brideButton.disabled = !gelinAyarli;
+      groomButton.disabled = !damatAyarli;
+      if (dialogNote) {
+        dialogNote.hidden = gelinAyarli;
+        dialogNote.textContent = gelinAyarli ? "" : "Gelin için WhatsApp numarası henüz eklenmedi.";
+      }
+      dialog.showModal();
     });
   });
 }

@@ -328,7 +328,7 @@
         <h2>Geliyor musunuz?</h2>
         <p>
           Masaları doğru kurabilmemiz için haber verin yeter. Butona dokununca
-          WhatsApp açılır, mesaj hazır gelir — siz sadece gönderin.
+          kime mesaj atmak istediğinizi seçin; mesajınız hazır gelir.
         </p>
         <div class="rsvp-choices reveal-item">
           <a class="button primary rsvp-choice" data-wa="yes" href="#">Geliyorum</a>
@@ -413,6 +413,26 @@
       <a href="#mekan">Mekan</a>
       <a href="#rsvp">Katılım</a>
     </nav>
+
+    <dialog class="recipient-dialog" id="recipient-dialog" aria-labelledby="recipient-title">
+      <form method="dialog" class="recipient-dialog-card">
+        <button class="recipient-close" type="submit" aria-label="Seçimi kapat">×</button>
+        <p class="section-kicker">Katılım bildirimi</p>
+        <h2 id="recipient-title">Kime mesaj atalım?</h2>
+        <p class="recipient-dialog-copy">
+          Cevabınız hazır mesajla iletilecek.
+        </p>
+        <div class="recipient-choices">
+          <button class="button recipient-choice recipient-bride" id="message-bride" type="button">
+            Geline Mesaj At
+          </button>
+          <button class="button recipient-choice recipient-groom" id="message-groom" type="button">
+            Damada Mesaj At
+          </button>
+        </div>
+        <p class="recipient-dialog-note" id="recipient-dialog-note" hidden></p>
+      </form>
+    </dialog>
 
     <!-- Sag kenardaki ilerleme seridi. Tamamen dekoratif (aria-hidden): ayni
          bilgiyi her bolumun sonundaki "devami asagida" baglantilari zaten

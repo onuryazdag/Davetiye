@@ -973,6 +973,92 @@ p {
   opacity: 0.55;
 }
 
+.recipient-dialog {
+  width: min(calc(100% - 40px), 360px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--bg);
+  box-shadow: 0 18px 54px rgba(17, 17, 17, 0.22);
+  color: var(--ink);
+}
+
+.recipient-dialog::backdrop {
+  background: rgba(17, 17, 17, 0.42);
+  backdrop-filter: blur(3px);
+}
+
+.recipient-dialog-card {
+  position: relative;
+  padding: 34px 24px 26px;
+  text-align: center;
+}
+
+.recipient-dialog .section-kicker {
+  margin-bottom: 10px;
+}
+
+.recipient-dialog h2 {
+  margin-bottom: 10px;
+  font-size: clamp(1.9rem, 8vw, 2.35rem);
+}
+
+.recipient-dialog-copy {
+  margin-bottom: 18px;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.recipient-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.recipient-choices {
+  display: grid;
+  gap: 10px;
+}
+
+.recipient-choices .button {
+  width: 100%;
+  min-height: 54px;
+  margin: 0;
+}
+
+.button.recipient-bride {
+  border-color: var(--rose);
+  background: var(--rose);
+  color: var(--bg);
+}
+
+.button.recipient-groom {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.recipient-choices .button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.recipient-dialog-note {
+  margin: 14px auto 0;
+  color: var(--rose);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
 .countdown-line {
   width: min(100%, 320px);
   margin: clamp(8px, 1.5svh, 14px) auto 0;
