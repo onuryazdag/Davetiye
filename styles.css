@@ -641,6 +641,13 @@ p {
    Boylece sabit alt menunun arkasina dusmuyor ve her bolumde ayni yerde. */
 .scroll-cue-akis {
   position: static;
+  /* .scroll-cue mutlak konumlu oldugu icin bir "bottom" degeri tasiyor.
+     Program bolumunde `.program > :not(.program-deco)` kurali cocuklari
+     relative yapiyor (metin dekoratif cizimlerin ustunde kalsin diye) ve o
+     kuralin ozgullugu daha yuksek. O durumda bottom degeri devreye girip
+     ipucunu akistaki yerinden yukari kaydiriyordu. inset: auto bunu
+     etkisiz kilar: konum relative'e zorlansa bile oge yerinden oynamaz. */
+  inset: auto;
   margin: clamp(8px, 1.4svh, 16px) auto 0;
 }
 
