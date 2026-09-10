@@ -22,6 +22,7 @@ const musicDuration = document.getElementById("music-duration");
 const heroWelcome = document.querySelector(".hero-welcome");
 const phoneShell = document.querySelector(".phone-shell");
 const quickNav = document.querySelector(".quick-nav");
+const ilerleme = document.getElementById("ilerleme");
 const countdownDone = document.getElementById("countdown-done");
 const countdownLine = document.getElementById("countdown-line");
 const countdown = document.querySelector(".countdown");
@@ -140,12 +141,81 @@ async function playMusic() {
 }
 
 async function openInvitation() {
+  // Kapak kalkmadan once konumu tepeye sabitle. Kullanici siteye daha once
+  // girip asagi inmisse tarayici o yeri hatirliyor ve davetiye ortasindan
+  // aciliyordu.
+  basaSar();
   startScreen?.classList.add("is-hidden");
   setBackgroundInert(false);
+  seridiBaslat();
   // Bu bir kullanici dokunusu, otomatik oynatma politikasi izin verir.
   // Reddedilirse playMusic sessizce kapali duruma duser; o durumda play
   // tusundaki nabiz atmaya devam eder ve kullaniciyi tusa yonlendirir.
   await playMusic();
+}
+
+// Tarayici sayfa yenilenince kaldigin yeri geri yukler (scrollRestoration).
+// Davetiye her acilista kapak ekraniyla basladigi icin bu, "Davetiyeyi Ac"a
+// basar basmaz sayfanin ortasindan baslamak demek oluyordu. Konumu biz
+// yonetiyoruz.
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+function basaSar() {
+  const kok = document.documentElement;
+  const eskiDavranis = kok.style.scrollBehavior;
+  // html'de scroll-behavior: smooth var; burada suzulme degil aninda tepe gerek.
+  kok.style.scrollBehavior = "auto";
+  window.scrollTo(0, 0);
+  kok.style.scrollBehavior = eskiDavranis;
+}
+
+// --- Sag kenardaki ilerleme seridi --------------------------------------
+
+// Kapak kalktiktan kac ms sonra kalp kullaniciyi durtsun.
+const CAGRI_GECIKMESI = 4000;
+// Nottan sonra kendi kendine kac ms'de cekilsin.
+const CAGRI_SURESI = 4200;
+
+let ilerlemeBekleyen = false;
+
+function ilerlemeGuncelle() {
+  ilerlemeBekleyen = false;
+  if (!ilerleme) return;
+
+  const en = document.documentElement.scrollHeight - window.innerHeight;
+  const oran = en > 0 ? Math.min(Math.max(window.scrollY / en, 0), 1) : 0;
+  ilerleme.style.setProperty("--oran", `${(oran * 100).toFixed(2)}%`);
+}
+
+function ilerlemeTetikle() {
+  // Kaydirma sirasinda kullanici zaten yolu bulmus; not yolundan cekilsin.
+  ilerleme?.classList.remove("is-cagiriyor");
+
+  if (!ilerlemeBekleyen) {
+    ilerlemeBekleyen = true;
+    // Kare basina tek hesap: kaydirmanin akiciligi bozulmasin.
+    requestAnimationFrame(ilerlemeGuncelle);
+  }
+}
+
+function seridiBaslat() {
+  if (!ilerleme) return;
+
+  ilerlemeGuncelle();
+  ilerleme.classList.add("is-acik");
+  window.addEventListener("scroll", ilerlemeTetikle, { passive: true });
+  window.addEventListener("resize", ilerlemeTetikle);
+
+  window.setTimeout(() => {
+    // Bu arada kaydirmaya baslamissa sayfanin devami oldugunu anlamis
+    // demektir; ustune bir de not cikarmayalim.
+    if (window.scrollY > 40) return;
+
+    ilerleme.classList.add("is-cagiriyor");
+    window.setTimeout(() => ilerleme.classList.remove("is-cagiriyor"), CAGRI_SURESI);
+  }, CAGRI_GECIKMESI);
 }
 
 function setupScrollReveal() {
@@ -361,6 +431,27 @@ musicToggle?.addEventListener("click", async () => {
 
 if (startScreen && !startScreen.classList.contains("is-hidden")) {
   setBackgroundInert(true);
+
+  // Adres cubugunda onceki ziyaretten kalan #mekan gibi bir capa varsa
+  // temizle: kalirsa alt menude ayni baglantiya dokunmak hicbir sey yapmaz
+  // (hash zaten o). ?ad= parametresi korunuyor.
+  if (window.location.hash) {
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
+
+  basaSar();
+
+  // Gorseller yuklendikce tarayici konumu bir kez daha oynatabiliyor, o yuzden
+  // load'da bir kez daha sabitliyoruz. Ama SADECE kapak hala ustteyse: yavas
+  // baglantida kullanici davetiyeyi acip kaydirmaya baslamis olabilir ve gec
+  // gelen load onu tepeye geri firlatmamali.
+  window.addEventListener(
+    "load",
+    () => {
+      if (!startScreen.classList.contains("is-hidden")) basaSar();
+    },
+    { once: true }
+  );
 }
 
 setupScrollReveal();

@@ -1410,3 +1410,110 @@ button.button:disabled {
     transition: none;
   }
 }
+/* ---------------- Sag kenardaki ilerleme seridi ---------------- */
+
+.ilerleme {
+  position: fixed;
+  top: 50%;
+  /* Icerik sutunu .phone-shell ile 430px'te sabitleniyor. Serit ekranin degil
+     O SUTUNUN sag kenarina yapissin, genis ekranda tek basina uzakta kalmasin.
+     28px = seridin 18px genisligi + sutun kenarina 10px pay. */
+  left: calc(50% + min(50vw, 215px) - 28px);
+  z-index: 6;
+  width: 18px;
+  height: 44svh;
+  color: rgba(17, 17, 17, 0.3);
+  opacity: 0;
+  /* Kaydirmayi ve dokunmayi hicbir sekilde engellemez. */
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity 600ms ease;
+}
+
+/* Kapak ekrani kalkana kadar gorunmez; sinifi script.js ekliyor. */
+.ilerleme.is-acik {
+  opacity: 1;
+}
+
+.ilerleme-yol {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ilerleme-kalp {
+  position: absolute;
+  left: 50%;
+  /* --oran'i script.js her kaydirmada yaziyor: 0% tepede, 100% en altta. */
+  top: var(--oran, 0%);
+  width: 15px;
+  height: 15px;
+  color: var(--rose);
+  /* left yerine translate3d: iOS Safari'de bileşik katmanda kalir, iz birakmaz. */
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.ilerleme-not {
+  position: absolute;
+  top: var(--oran, 0%);
+  /* Serit 18px genisliginde; 26px onu 8px payla soluna atar. */
+  right: 26px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  /* Metnin ve gorsellerin uzerine gelebilir; opak zemin okunurlugu,
+     hafif golge de "uste dusen gecici bir ipucu" hissini verir. */
+  background: var(--bg);
+  box-shadow: 0 4px 14px rgba(17, 17, 17, 0.1);
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate3d(6px, -50%, 0);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+
+.ilerleme.is-cagiriyor .ilerleme-not {
+  opacity: 1;
+  transform: translate3d(0, -50%, 0);
+}
+
+.ilerleme.is-cagiriyor .ilerleme-kalp {
+  animation: kalp-cagir 900ms ease-in-out 3;
+}
+
+@keyframes kalp-cagir {
+  0%,
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+
+  30% {
+    transform: translate3d(-50%, -50%, 0) scale(1.45);
+  }
+
+  60% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+}
+
+/* Cok kisa ekranda serit icerikle sikisiyor; orada hic cikmasin. */
+@media (max-height: 600px) {
+  .ilerleme {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ilerleme,
+  .ilerleme-not {
+    transition: none;
+  }
+
+  /* Not yine gorunur, sadece kalp zipzip etmez. */
+  .ilerleme.is-cagiriyor .ilerleme-kalp {
+    animation: none;
+  }
+}
